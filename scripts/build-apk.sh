@@ -3,8 +3,9 @@
 # Usage: bash scripts/build-apk.sh phone|tv
 #   ABIS=arm64-v8a            CPU architectures to compile (default per variant, see below)
 #   SKIP_PREBUILD=1           reuse the existing android/ (only if it was generated for the same variant)
+#   TEST_STREAMS=0            leave out the QA test streams (included by default in these QA APKs)
 # Output: dist-apk/tunisietv-<variant>-release.apk
-# NOTE: signed with the template debug keystore → for local testing only, not for the Play Store.
+# Signed with the upload key when TUNISIETV_UPLOAD_* are set (see scripts/build-aab.sh), else the debug key.
 set -euo pipefail
 
 VARIANT="${1:?usage: build-apk.sh phone|tv}"
@@ -22,6 +23,7 @@ else
   DEFAULT_ABIS="arm64-v8a"
 fi
 ABIS="${ABIS:-$DEFAULT_ABIS}"
+export TUNISIETV_TEST_STREAMS="${TEST_STREAMS:-1}"
 
 # android/ is generated (CNG) and gitignored; --clean regenerates it for this variant.
 if [ "${SKIP_PREBUILD:-0}" != "1" ]; then

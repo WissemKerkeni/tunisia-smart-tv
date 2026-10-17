@@ -1,14 +1,16 @@
+import Constants from 'expo-constants';
+
 import type { Channel } from '@/domain/models/Channel';
 
 /**
  * MOCK CATALOG. Channel names are used for realistic UI only.
  * - No real stream URLs for broadcasters: no source has been verified as
  *   authorized (see docs/stream-rights-checklist.md).
- * - Two `TEST_STREAM` entries (numbers 90+) point at vendor-published HLS test
+ * - `testStreamChannels` (numbers 90+) point at vendor-published HLS test
  *   samples so the player can be exercised. They are not TV channels.
  * - No broadcaster logos: original monogram tiles (see docs/design-system.md §6).
  */
-export const mockChannels: readonly Channel[] = [
+export const broadcasterChannels: readonly Channel[] = [
   {
     id: 'wataniya-1',
     number: 1,
@@ -87,7 +89,14 @@ export const mockChannels: readonly Channel[] = [
     description: 'Actualités & débats',
     descriptionAr: 'أخبار ونقاشات',
   },
-  // Player QA only. Sources and terms: docs/stream-rights-checklist.md §2.
+];
+
+/**
+ * Player QA only. Sources and terms: docs/stream-rights-checklist.md §2.
+ * Shipped in dev and QA builds (`extra.includeTestStreams`, set by
+ * scripts/build-apk.sh), never in store builds (scripts/build-aab.sh).
+ */
+export const testStreamChannels: readonly Channel[] = [
   {
     id: 'test-apple-bipbop',
     number: 90,
@@ -118,3 +127,9 @@ export const mockChannels: readonly Channel[] = [
     descriptionAr: 'Big Buck Bunny (Mux، CC BY)',
   },
 ];
+
+export const INCLUDE_TEST_STREAMS = __DEV__ || Constants.expoConfig?.extra?.includeTestStreams === true;
+
+export const mockChannels: readonly Channel[] = INCLUDE_TEST_STREAMS
+  ? [...broadcasterChannels, ...testStreamChannels]
+  : broadcasterChannels;

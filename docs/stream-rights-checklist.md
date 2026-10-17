@@ -20,7 +20,7 @@ Before a channel moves to `VERIFIED_AUTHORIZED`, record: rights holder, contact,
 | `test-apple-bipbop` | `https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8` | Apple, "HTTP Live Streaming Examples" (developer.apple.com/streaming/examples) | Published by Apple as reference streams for developers testing HLS players. Multi-bitrate H.264/TS |
 | `test-mux-bbb` | `https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8` | Mux public test streams | Content is *Big Buck Bunny* © Blender Foundation, CC BY 3.0 |
 
-Both returned HTTP 200 on 2026-10-17. They are VOD streams, so the "live" UI is exercised with on-demand content. Before a store release, remove them or hide them behind a debug flag.
+Both returned HTTP 200 on 2026-10-17. They are VOD streams, so the "live" UI is exercised with on-demand content. They ship only in dev and QA builds: `scripts/build-aab.sh` (store bundles) always leaves them out.
 
 ## 3. Broadcaster channels
 

@@ -28,7 +28,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   icon: './assets/brand/icon.png',
   android: {
     package: 'tn.tunisietv.app',
-    versionCode: 1,
+    // Play rejects an upload whose versionCode isn't higher than the last one.
+    versionCode: Number(process.env.TUNISIETV_VERSION_CODE ?? 1),
     adaptiveIcon: {
       backgroundColor: BACKGROUND,
       foregroundImage: './assets/brand/adaptive-foreground.png',
@@ -61,7 +62,18 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-localization',
     // Light nav-bar icons, no contrast scrim: the dark tab bar shows through edge-to-edge.
     ['expo-navigation-bar', { style: 'light', enforceContrast: false }],
+    [
+      'expo-build-properties',
+      {
+        android: {
+          // R8 code shrinking + unused resource removal (release builds only).
+          enableMinifyInReleaseBuilds: true,
+          enableShrinkResourcesInReleaseBuilds: true,
+        },
+      },
+    ],
     './plugins/withOptionalHardwareFeatures',
+    './plugins/withReleaseSigning',
     [
       '@react-native-tvos/config-tv',
       {
@@ -75,5 +87,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   extra: {
     isTV,
+    // QA builds only (scripts/build-apk.sh sets it; scripts/build-aab.sh forces it off).
+    // Read at runtime through expo-constants: its config is regenerated on every build,
+    // unlike EXPO_PUBLIC_* values, which Metro/Gradle caches can leave stale.
+    includeTestStreams: process.env.TUNISIETV_TEST_STREAMS === '1',
   },
 });

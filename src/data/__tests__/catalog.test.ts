@@ -1,4 +1,4 @@
-import { mockChannels } from '@/data/catalog/mockChannels';
+import { broadcasterChannels, mockChannels, testStreamChannels } from '@/data/catalog/mockChannels';
 import { LocalChannelRepository } from '@/data/repositories/ChannelRepository';
 import { type Channel, isPlayable } from '@/domain/models/Channel';
 
@@ -6,6 +6,13 @@ describe('mock catalog', () => {
   it('has unique ids and numbers', () => {
     expect(new Set(mockChannels.map((c) => c.id)).size).toBe(mockChannels.length);
     expect(new Set(mockChannels.map((c) => c.number)).size).toBe(mockChannels.length);
+  });
+
+  it('keeps test streams separate from broadcaster channels', () => {
+    expect(testStreamChannels.every((c) => c.authorizationStatus === 'TEST_STREAM')).toBe(true);
+    expect(broadcasterChannels.some((c) => c.authorizationStatus === 'TEST_STREAM')).toBe(false);
+    const all = [...broadcasterChannels, ...testStreamChannels];
+    expect(new Set(all.map((c) => c.id)).size).toBe(all.length);
   });
 
   it('contains no stream URLs for unverified channels', () => {

@@ -67,3 +67,13 @@ Arabic / RTL (Phase 5), TV emulator (API 36, x86_64 release), 2026-10-17:
 - [x] Choosing Français restarts back into LTR; favorites and history survive both restarts
 - [ ] Phone in Arabic: not run yet (back arrow flip, search input alignment)
 - Unit: language preference persistence + corrupt values, `resolveLocale`, FR/AR string key parity, Arabic plural forms
+
+Release hardening (Phase 6), TV emulator (API 36, x86_64, R8 on), 2026-10-17:
+- [x] R8 + shrinkResources build launches with no crash; Home, Channels, Settings render
+- [x] Playback (Mux test stream) and zapping work under R8
+- [x] Arabic ↔ French restart works under R8 (the restart module survives shrinking)
+- [x] `TEST_STREAMS=0` → 6 channels; `TEST_STREAMS=1` → 8, both without a prebuild in between
+- [x] Build signed with a throwaway upload key: `apksigner verify` shows the upload certificate, installs and runs (the key was deleted afterwards)
+- [ ] `build-aab.sh`: syntax-checked only; a real bundle needs your upload key
+- [ ] Phone build with R8: built, not run on a device yet
+

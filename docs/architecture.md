@@ -72,4 +72,26 @@ The language preference (`system`, `fr`, `ar`) is stored locally and read before
 bash scripts/build-apk.sh phone   # → dist-apk/tunisietv-phone-release.apk
 bash scripts/build-apk.sh tv      # → dist-apk/tunisietv-tv-release.apk
 ```
-Requirements: `JAVA_HOME` = JDK 17, and `ANDROID_HOME` (or the default `%LOCALAPPDATA%\Android\Sdk`). These APKs are signed with the template debug keystore and are **for testing only**. Release signing gets set up in Phase 7.
+Requirements: `JAVA_HOME` = JDK 17, and `ANDROID_HOME` (or the default `%LOCALAPPDATA%\Android\Sdk`). These are **QA APKs**: they include the test streams (`TEST_STREAMS=0` leaves them out) and are signed with the template debug keystore unless the upload-key variables below are set.
+
+Release builds have R8 code shrinking and resource shrinking on (`expo-build-properties` in `app.config.ts`).
+
+## Release builds (Play Store)
+1. **Once:** create the upload key, and keep the file and its passwords outside the repo (a password manager plus a backup):
+   ```bash
+   bash scripts/create-upload-keystore.sh
+   ```
+   With Play App Signing, Google keeps the app signing key, and this upload key only authenticates uploads. If it's lost, Play support can reset it.
+2. **Each release:** export the key variables and a versionCode higher than the last upload, then build one bundle per variant:
+   ```bash
+   export TUNISIETV_UPLOAD_STORE_FILE=~/.tunisietv/upload.p12
+   export TUNISIETV_UPLOAD_STORE_PASSWORD=…  TUNISIETV_UPLOAD_KEY_PASSWORD=…
+   export TUNISIETV_UPLOAD_KEY_ALIAS=tunisietv-upload
+   TUNISIETV_VERSION_CODE=2 bash scripts/build-aab.sh phone
+   TUNISIETV_VERSION_CODE=3 bash scripts/build-aab.sh tv
+   ```
+   Phone and TV share the `applicationId`, so each upload needs its own, increasing versionCode. `build-aab.sh` refuses to run without the key variables, always leaves out the test streams, runs a clean prebuild for the variant, and writes `dist-aab/` (gitignored).
+
+How it's wired:
+- `plugins/withReleaseSigning.js` adds a `release` signing config that reads `TUNISIETV_UPLOAD_*` from the environment, so no secret is ever written to the repo or `android/`.
+- Test streams are toggled through `extra.includeTestStreams` (read at runtime through `expo-constants`), not an `EXPO_PUBLIC_*` variable. Gradle treats the JS bundle as up to date when only an env var changes, and Metro's cache key ignores env vars, so an inlined value can go stale between builds. `expo-constants` regenerates its config on every build. Verified 2026-10-17: flipping the flag without a prebuild changes the channel list.
