@@ -34,10 +34,11 @@ export type ChannelLogo =
   | { kind: 'monogram'; text: string; colors: readonly [string, string] }
   | { kind: 'image'; uri: string };
 
-export type StreamFormat = 'hls' | 'dash' | 'progressive';
+/** `youtube`: the broadcaster's own YouTube live page, opened outside the app (never played in-app). */
+export type StreamFormat = 'hls' | 'dash' | 'progressive' | 'youtube';
 
 export interface ChannelStream {
-  /** `null` until an authorized source exists. The player shows an "unavailable" state. */
+  /** `null` when no source is known. The player shows an "unavailable" state. */
   url: string | null;
   format: StreamFormat;
 }
@@ -68,11 +69,20 @@ export interface Channel {
   descriptionAr?: string;
 }
 
-/** True only when the app is allowed to attempt playback. */
+/**
+ * True only when the app is allowed to attempt in-app playback.
+ * `OFFICIAL_SOURCE_PERMISSION_UNCONFIRMED` URLs only reach this point in dev/QA
+ * builds: the catalog strips them from store builds (src/data/catalog/mockChannels.ts).
+ */
 export function isPlayable(channel: Channel): boolean {
   return (
     channel.stream.url !== null &&
-    (channel.authorizationStatus === 'VERIFIED_AUTHORIZED' ||
-      channel.authorizationStatus === 'TEST_STREAM')
+    channel.stream.format !== 'youtube' &&
+    channel.authorizationStatus !== 'NOT_VERIFIED'
   );
+}
+
+/** URL of the broadcaster's own live page, opened in the YouTube app instead of the in-app player. */
+export function externalLiveUrl(channel: Channel): string | null {
+  return channel.stream.format === 'youtube' ? channel.stream.url : null;
 }

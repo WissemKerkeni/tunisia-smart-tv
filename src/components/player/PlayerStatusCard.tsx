@@ -1,5 +1,5 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
 import { Button } from '@/components/common/Button';
@@ -11,19 +11,23 @@ import { isTV } from '@/utils/platform';
 
 /**
  * Everything that isn't plain playback: spinner while loading/reconnecting,
- * the Stitch "Lecture impossible" card with a retry button, or the
- * "no authorized source" notice. Renders nothing while playing/paused.
+ * the Stitch "Lecture impossible" card with a retry button, the
+ * "watch on YouTube" card for channels that only stream there, or the
+ * "no source" notice. Renders nothing while playing/paused.
  */
 export function PlayerStatusCard({
   state,
   attempt,
   onRetry,
   retryHasFocus,
+  externalUrl,
 }: {
   state: PlaybackState;
   attempt: number;
   onRetry: () => void;
   retryHasFocus?: boolean;
+  /** Broadcaster's own live page (YouTube), shown instead of the "unavailable" notice. */
+  externalUrl?: string | null;
 }) {
   const { t } = useI18n();
 
@@ -36,6 +40,28 @@ export function PlayerStatusCard({
         <AppText variant="meta" color={colors.textSecondary}>
           {state === 'retrying' ? t.player.retrying(attempt + 1, MAX_AUTO_RETRIES) : t.player.loading}
         </AppText>
+      </View>
+    );
+  }
+
+  if (state === 'unavailable' && externalUrl) {
+    return (
+      <View style={styles.card}>
+        <MaterialIcons name="smart-display" size={isTV ? 28 : 24} color={colors.accent} />
+        <View style={styles.text}>
+          <AppText variant="cardTitle">{t.player.youtubeTitle}</AppText>
+          <AppText variant="meta" color={colors.textSecondary}>
+            {t.player.youtubeHint}
+          </AppText>
+        </View>
+        <Button
+          kind="primary"
+          icon="open-in-new"
+          label={t.player.openYoutube}
+          // Handled by the YouTube app (phone and Android TV); ignore devices without a handler.
+          onPress={() => Linking.openURL(externalUrl).catch(() => undefined)}
+          hasTVPreferredFocus={retryHasFocus}
+        />
       </View>
     );
   }

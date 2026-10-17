@@ -56,7 +56,7 @@ const fr = {
     clearHistoryAction: 'Réinitialiser',
     cleared: 'Historique effacé',
     about: 'À propos de l’application',
-    contentNotice: 'Catalogue de démonstration : aucun flux n’est diffusé tant que les droits ne sont pas vérifiés.',
+    contentNotice: 'Les directs proviennent des sources officielles des chaînes (site ou chaîne YouTube).',
   },
   hints: {
     select: 'Sélectionner',
@@ -84,6 +84,9 @@ const fr = {
     quickZap: 'Zapping rapide',
     otherChannels: 'Autres chaînes',
     testStream: 'Flux de test',
+    youtubeTitle: 'Diffusé sur YouTube',
+    youtubeHint: 'Cette chaîne diffuse son direct sur sa chaîne YouTube officielle.',
+    openYoutube: 'Regarder sur YouTube',
   },
 };
 
@@ -147,7 +150,7 @@ const ar: Strings = {
     clearHistoryAction: 'مسح',
     cleared: 'تم مسح السجل',
     about: 'حول التطبيق',
-    contentNotice: 'كتالوج تجريبي: لا يتم بث أي قناة قبل التحقق من الحقوق.',
+    contentNotice: 'البث المباشر مصدره المواقع أو قنوات يوتيوب الرسمية للقنوات.',
   },
   hints: {
     select: 'اختيار',
@@ -175,6 +178,9 @@ const ar: Strings = {
     quickZap: 'تنقل سريع',
     otherChannels: 'قنوات أخرى',
     testStream: 'بث تجريبي',
+    youtubeTitle: 'يُبث على يوتيوب',
+    youtubeHint: 'تبث هذه القناة مباشرها على قناتها الرسمية في يوتيوب.',
+    openYoutube: 'المشاهدة على يوتيوب',
   },
 };
 

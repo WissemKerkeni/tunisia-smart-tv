@@ -17,10 +17,12 @@ export type PlaybackState = 'unavailable' | 'loading' | 'playing' | 'paused' | '
 
 function toSource(channel: Channel | null | undefined): VideoSource | null {
   if (!channel || !isPlayable(channel) || !channel.stream.url) return null;
-  const contentType = channel.stream.format === 'progressive' ? 'progressive' : channel.stream.format;
+  // YouTube sources open outside the app; isPlayable already rules them out.
+  const { format } = channel.stream;
+  if (format === 'youtube') return null;
   return {
     uri: channel.stream.url,
-    contentType,
+    contentType: format,
     metadata: { title: channel.name },
   };
 }

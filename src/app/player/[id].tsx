@@ -20,7 +20,7 @@ import { Button } from '@/components/common/Button';
 import { LiveBadge } from '@/components/common/LiveBadge';
 import { PlayerStatusCard } from '@/components/player/PlayerStatusCard';
 import { ZapStrip } from '@/components/player/ZapStrip';
-import { type Channel, isPlayable } from '@/domain/models/Channel';
+import { type Channel, externalLiveUrl, isPlayable } from '@/domain/models/Channel';
 import { useLibrary } from '@/features/library/LibraryProvider';
 import { useAutoHide } from '@/features/player/useAutoHide';
 import { type PlaybackState, usePlayback } from '@/features/player/usePlayback';
@@ -119,14 +119,22 @@ function TVPlayer({ channel, channels, playback, zap, zapBy }: LayoutProps) {
   );
 
   const favorite = isFavorite(channel.id);
-  const hasError = state === 'error' || state === 'offline';
+  const externalUrl = externalLiveUrl(channel);
+  // The status card's button takes focus when it's the main action (retry, or open YouTube).
+  const cardHasFocus = state === 'error' || state === 'offline' || (state === 'unavailable' && !!externalUrl);
 
   return (
     <View style={styles.screen}>
       <VideoView player={player} style={StyleSheet.absoluteFill} contentFit="contain" nativeControls={false} />
 
       <View style={styles.tvCenter} pointerEvents="box-none">
-        <PlayerStatusCard state={state} attempt={attempt} onRetry={retry} retryHasFocus={hasError} />
+        <PlayerStatusCard
+          state={state}
+          attempt={attempt}
+          onRetry={retry}
+          retryHasFocus={cardHasFocus}
+          externalUrl={externalUrl}
+        />
       </View>
 
       {!chrome.visible ? (
@@ -176,7 +184,7 @@ function TVPlayer({ channel, channels, playback, zap, zapBy }: LayoutProps) {
             <ZapStrip channels={channels} currentId={channel.id} onSelect={zap} />
             <View style={styles.tvControls}>
               <Button round icon="skip-previous" accessibilityLabel={t.player.previous} onPress={() => zapBy(-1)} />
-              <PlayPauseButton state={state} onPress={togglePlay} preferredFocus={!hasError} label={t} />
+              <PlayPauseButton state={state} onPress={togglePlay} preferredFocus={!cardHasFocus} label={t} />
               <Button round icon="skip-next" accessibilityLabel={t.player.next} onPress={() => zapBy(1)} />
               <View style={styles.separator} />
               <Button
@@ -320,7 +328,9 @@ function PhonePlayer({ channel, channels, playback, zap, zapBy }: LayoutProps) {
           />
         </View>
 
-        {!busy && <PlayerStatusCard state={state} attempt={attempt} onRetry={retry} />}
+        {!busy && (
+          <PlayerStatusCard state={state} attempt={attempt} onRetry={retry} externalUrl={externalLiveUrl(channel)} />
+        )}
 
         <View style={styles.sectionHeader}>
           <View style={styles.sectionMark} />
