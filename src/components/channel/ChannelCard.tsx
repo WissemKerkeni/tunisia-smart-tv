@@ -18,6 +18,10 @@ export function channelTitle(channel: Channel, locale: string) {
   return locale === 'ar' && channel.nameAr ? channel.nameAr : channel.name;
 }
 
+export function channelDescription(channel: Channel, locale: string): string | undefined {
+  return locale === 'ar' && channel.descriptionAr ? channel.descriptionAr : channel.description;
+}
+
 /**
  * Stitch channel tile: gradient art + CH chip + DIRECT pill (only when the
  * channel is actually playable) + centered monogram, then title/subtitle.

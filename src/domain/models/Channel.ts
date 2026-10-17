@@ -64,6 +64,8 @@ export interface Channel {
   languages?: readonly LanguageCode[];
   availability?: ChannelAvailability;
   description?: string;
+  /** Optional Arabic description. */
+  descriptionAr?: string;
 }
 
 /** True only when the app is allowed to attempt playback. */

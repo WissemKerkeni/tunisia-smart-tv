@@ -10,7 +10,7 @@ import { useI18n } from '@/localization/i18n';
 import { colors, fonts, radii, spacing } from '@/theme/tokens';
 import { isTV } from '@/utils/platform';
 
-import { channelTitle } from './ChannelCard';
+import { channelDescription, channelTitle } from './ChannelCard';
 import { ChannelMonogram } from './ChannelMonogram';
 
 /**
@@ -52,7 +52,7 @@ export function FeaturedHero({
           {isPlayable(channel) && <LiveBadge label={t.live} />}
           <View style={styles.channelChip}>
             <ChannelMonogram logo={channel.logo} size={20} />
-            <AppText variant="badge">{channel.name}</AppText>
+            <AppText variant="badge">{channelTitle(channel, locale)}</AppText>
           </View>
         </View>
         <AppText variant="display" numberOfLines={2}>
@@ -61,9 +61,9 @@ export function FeaturedHero({
         <AppText variant="body" color={colors.textSecondary}>
           {meta}
         </AppText>
-        {channel.description && (
+        {channelDescription(channel, locale) && (
           <AppText variant="body" style={styles.description} numberOfLines={2}>
-            {channel.description}
+            {channelDescription(channel, locale)}
           </AppText>
         )}
         <View style={styles.actions}>

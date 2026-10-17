@@ -10,7 +10,7 @@ export function RemoteHintBar() {
   const hints: [string, string][] = [
     ['OK', t.hints.select],
     ['▲ ▼ ◀ ▶', t.hints.navigate],
-    ['RETOUR', t.hints.back],
+    [t.hints.backKey, t.hints.back],
   ];
   return (
     <View style={styles.bar}>

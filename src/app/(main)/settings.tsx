@@ -5,8 +5,10 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
+import { Chip } from '@/components/common/Chip';
 import { Screen, SCREEN_GUTTER } from '@/components/common/Screen';
 import { Focusable } from '@/components/tv/Focusable';
+import type { LanguagePreference } from '@/data/storage/preferencesStorage';
 import { useLibrary } from '@/features/library/LibraryProvider';
 import { useI18n } from '@/localization/i18n';
 import { colors, radii, spacing } from '@/theme/tokens';
@@ -16,7 +18,7 @@ type IconName = ComponentProps<typeof MaterialIcons>['name'];
 
 /**
  * Stitch "Favoris & Paramètres" (settings half). Only settings that actually
- * work are shown. Manual language choice arrives in Phase 5 (needs an RTL restart).
+ * work are shown.
  */
 export default function SettingsScreen() {
   const { t } = useI18n();
@@ -27,16 +29,13 @@ export default function SettingsScreen() {
   return (
     <Screen title={t.nav.settings}>
       <View style={[styles.panel, { marginHorizontal: SCREEN_GUTTER }]}>
-        <Row icon="translate" title={t.settings.language} hint={t.settings.languageHint}>
-          <Value>{t.settings.languageValue}</Value>
-        </Row>
+        <LanguageRow />
         <Row
           icon="delete-outline"
           title={t.settings.clearHistory}
           hint={cleared ? t.settings.cleared : t.settings.clearHistoryHint}
           danger
           disabled={history.length === 0}
-          hasTVPreferredFocus
           onPress={() => {
             clearHistory();
             setCleared(true);
@@ -53,6 +52,41 @@ export default function SettingsScreen() {
         </Row>
       </View>
     </Screen>
+  );
+}
+
+/** Language names stay in their own script whatever the UI language. */
+const LANGUAGE_OPTIONS: readonly { value: LanguagePreference; label?: string }[] = [
+  { value: 'system' },
+  { value: 'fr', label: 'Français' },
+  { value: 'ar', label: 'العربية' },
+];
+
+function LanguageRow() {
+  const { t, language, setLanguage } = useI18n();
+  return (
+    <View style={[styles.row, styles.rowDivider, styles.languageRow]}>
+      <View style={styles.languageHead}>
+        <MaterialIcons name="translate" size={22} color={colors.textSecondary} />
+        <View style={styles.rowText}>
+          <AppText variant="cardTitle">{t.settings.language}</AppText>
+          <AppText variant="meta" color={colors.textSecondary}>
+            {t.settings.languageHint}
+          </AppText>
+        </View>
+      </View>
+      <View style={styles.languageOptions} accessibilityRole="tablist">
+        {LANGUAGE_OPTIONS.map((o) => (
+          <Chip
+            key={o.value}
+            label={o.label ?? t.settings.languageSystem}
+            selected={language === o.value}
+            hasTVPreferredFocus={language === o.value}
+            onPress={() => language !== o.value && setLanguage(o.value)}
+          />
+        ))}
+      </View>
+    </View>
   );
 }
 
@@ -140,6 +174,10 @@ const styles = StyleSheet.create({
     minHeight: 64,
   },
   rowDivider: { borderBottomWidth: 1, borderBottomColor: colors.divider },
+  // TV: options beside the label. Phone: below it, the row is too narrow.
+  languageRow: isTV ? {} : { flexDirection: 'column', alignItems: 'stretch' },
+  languageHead: { flex: isTV ? 1 : undefined, flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  languageOptions: { flexDirection: 'row', gap: spacing.sm, flexWrap: 'wrap' },
   rowFocused: { backgroundColor: colors.surface3 },
   noOverflow: { margin: 0, padding: 0 },
   rowText: { flex: 1, gap: 2 },

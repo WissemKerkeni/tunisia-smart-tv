@@ -4,14 +4,48 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { asyncStorageStore } from '@/data/storage/keyValueStore';
+import { createPreferencesStorage, type LanguagePreference } from '@/data/storage/preferencesStorage';
 import { LibraryProvider } from '@/features/library/LibraryProvider';
-import { detectLocale, I18nProvider, syncNativeDirection } from '@/localization/i18n';
+import {
+  applyNativeDirection,
+  detectLocale,
+  I18nProvider,
+  resolveLocale,
+  restartForDirection,
+} from '@/localization/i18n';
 import { colors } from '@/theme/tokens';
 
 SplashScreen.preventAutoHideAsync();
+
+const preferences = createPreferencesStorage(asyncStorageStore);
+const DIRECTION_FIX_KEY = 'tunisietv:directionFix:v1';
+const deviceLocale = detectLocale();
+
+/**
+ * Reads the saved language and makes sure the native layout direction matches
+ * it. A mismatch (first launch in Arabic, device language changed, a restart
+ * that lost the flag) triggers one restart; the stored marker stops a loop if
+ * the flag never sticks. Resolves to `null` while a restart is under way.
+ */
+async function loadLanguage(): Promise<LanguagePreference | null> {
+  const language = await preferences.getLanguage();
+  const locale = resolveLocale(language, deviceLocale);
+  const mismatch = applyNativeDirection(locale);
+  const attempted = await asyncStorageStore.getItem(DIRECTION_FIX_KEY);
+  if (!mismatch) {
+    if (attempted) await asyncStorageStore.removeItem(DIRECTION_FIX_KEY);
+    return language;
+  }
+  if (attempted !== locale) {
+    await asyncStorageStore.setItem(DIRECTION_FIX_KEY, locale);
+    if (await restartForDirection()) return null;
+  }
+  return language; // Render anyway; mirrored layout follows on the next launch.
+}
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -23,22 +57,29 @@ export default function RootLayout() {
     Manrope_600SemiBold,
     Manrope_700Bold,
   });
-  const locale = useMemo(() => detectLocale(), []);
+  const [language, setLanguage] = useState<LanguagePreference | null>(null);
+  const fontsDone = fontsLoaded || !!fontError;
 
   useEffect(() => {
-    syncNativeDirection(locale);
-  }, [locale]);
+    let alive = true;
+    loadLanguage()
+      .catch((): LanguagePreference => 'system')
+      .then((l) => alive && l && setLanguage(l));
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
-    if (fontsLoaded || fontError) SplashScreen.hideAsync();
-  }, [fontsLoaded, fontError]);
+    if (fontsDone && language) SplashScreen.hideAsync();
+  }, [fontsDone, language]);
 
   // On font failure, render with system fonts rather than block the app.
-  if (!fontsLoaded && !fontError) return null;
+  if (!fontsDone || !language) return null;
 
   return (
     <SafeAreaProvider>
-      <I18nProvider locale={locale}>
+      <I18nProvider initialLanguage={language} deviceLocale={deviceLocale} saveLanguage={preferences.setLanguage}>
         <LibraryProvider>
           <StatusBar style="light" />
           <Stack

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { channelTitle } from '@/components/channel/ChannelCard';
+import { channelDescription, channelTitle } from '@/components/channel/ChannelCard';
 import { ChannelMonogram } from '@/components/channel/ChannelMonogram';
 import { AppText } from '@/components/common/AppText';
 import { Button } from '@/components/common/Button';
@@ -150,8 +150,8 @@ function TVPlayer({ channel, channels, playback, zap, zapBy }: LayoutProps) {
               </View>
               <AppText variant="meta" color={colors.textSecondary} numberOfLines={1}>
                 {channel.authorizationStatus === 'TEST_STREAM'
-                  ? `${t.player.testStream} · ${channel.description ?? ''}`
-                  : (channel.description ?? t.category[channel.category])}
+                  ? `${t.player.testStream} · ${channelDescription(channel, locale) ?? ''}`
+                  : (channelDescription(channel, locale) ?? t.category[channel.category])}
               </AppText>
             </View>
             <AppText variant="section" style={styles.ltr}>
@@ -223,7 +223,7 @@ function PlayPauseButton({
 /* ──────────────────────────── Phone ─────────────────────────── */
 
 function PhonePlayer({ channel, channels, playback, zap, zapBy }: LayoutProps) {
-  const { t, locale } = useI18n();
+  const { t, locale, isRTL } = useI18n();
   const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
   const landscape = width > height;
@@ -257,7 +257,13 @@ function PhonePlayer({ channel, channels, playback, zap, zapBy }: LayoutProps) {
       {chrome.visible && (
         <View style={styles.phoneChrome} pointerEvents="box-none">
           <View style={styles.phoneChromeTop} pointerEvents="box-none">
-            <Button round icon="arrow-back" accessibilityLabel={t.back} onPress={leavePlayer} />
+            <Button
+              round
+              // Material icons don't mirror themselves.
+              icon={isRTL ? 'arrow-forward' : 'arrow-back'}
+              accessibilityLabel={t.back}
+              onPress={leavePlayer}
+            />
             {isPlayable(channel) && <LiveBadge label={t.live} />}
             <View style={styles.flex} />
             {isPlayable(channel) && (
@@ -299,9 +305,9 @@ function PhonePlayer({ channel, channels, playback, zap, zapBy }: LayoutProps) {
             <AppText variant="meta" color={colors.gold} numberOfLines={1}>
               {channel.authorizationStatus === 'TEST_STREAM' ? t.player.testStream : t.category[channel.category]}
             </AppText>
-            {channel.description && (
+            {channelDescription(channel, locale) && (
               <AppText variant="meta" color={colors.textSecondary} numberOfLines={2}>
-                {channel.description}
+                {channelDescription(channel, locale)}
               </AppText>
             )}
           </View>
@@ -365,7 +371,8 @@ const styles = StyleSheet.create({
     paddingTop: spacing.xxxl * 2,
     paddingBottom: tvSafeArea.vertical,
   },
-  tvControls: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  // Media controls keep LTR order in Arabic too (Material: playback controls aren't mirrored).
+  tvControls: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, direction: 'ltr' },
   separator: { width: 1, height: 28, backgroundColor: colors.dividerStrong, marginHorizontal: spacing.sm },
   playButton: { width: isTV ? 56 : 64, height: isTV ? 56 : 64, borderRadius: radii.full },
 
@@ -377,6 +384,7 @@ const styles = StyleSheet.create({
   phoneChrome: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(0,0,0,0.35)', padding: spacing.md },
   phoneChromeTop: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
   phoneChromeCenter: {
+    direction: 'ltr',
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',

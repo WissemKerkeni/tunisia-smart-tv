@@ -10,10 +10,12 @@ export function Chip({
   label,
   selected,
   onPress,
+  hasTVPreferredFocus,
 }: {
   label: string;
   selected: boolean;
   onPress: () => void;
+  hasTVPreferredFocus?: boolean;
 }) {
   return (
     <Focusable
@@ -21,6 +23,7 @@ export function Chip({
       glow={false}
       radius={radii.full}
       onPress={onPress}
+      hasTVPreferredFocus={hasTVPreferredFocus}
       accessibilityRole="tab"
       accessibilityState={{ selected }}
       style={[styles.chip, selected && styles.selected]}

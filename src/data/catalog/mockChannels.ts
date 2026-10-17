@@ -20,6 +20,7 @@ export const mockChannels: readonly Channel[] = [
     authorizationStatus: 'NOT_VERIFIED',
     languages: ['ar', 'fr'],
     description: 'Télévision publique nationale',
+    descriptionAr: 'التلفزة العمومية الوطنية',
   },
   {
     id: 'wataniya-2',
@@ -32,6 +33,7 @@ export const mockChannels: readonly Channel[] = [
     authorizationStatus: 'NOT_VERIFIED',
     languages: ['ar'],
     description: 'Chaîne publique · régions',
+    descriptionAr: 'القناة العمومية · الجهات',
   },
   {
     id: 'elhiwar-ettounsi',
@@ -44,6 +46,7 @@ export const mockChannels: readonly Channel[] = [
     authorizationStatus: 'NOT_VERIFIED',
     languages: ['ar'],
     description: 'Variétés & divertissement',
+    descriptionAr: 'منوعات وترفيه',
   },
   {
     id: 'attessia',
@@ -56,6 +59,7 @@ export const mockChannels: readonly Channel[] = [
     authorizationStatus: 'NOT_VERIFIED',
     languages: ['ar'],
     description: 'Talk-shows & séries',
+    descriptionAr: 'برامج حوارية ومسلسلات',
   },
   {
     id: 'nessma',
@@ -68,6 +72,7 @@ export const mockChannels: readonly Channel[] = [
     authorizationStatus: 'NOT_VERIFIED',
     languages: ['ar', 'fr'],
     description: 'Divertissement & séries',
+    descriptionAr: 'ترفيه ومسلسلات',
   },
   {
     id: 'hannibal',
@@ -80,6 +85,7 @@ export const mockChannels: readonly Channel[] = [
     authorizationStatus: 'NOT_VERIFIED',
     languages: ['ar'],
     description: 'Actualités & débats',
+    descriptionAr: 'أخبار ونقاشات',
   },
   // Player QA only. Sources and terms: docs/stream-rights-checklist.md §2.
   {
@@ -96,6 +102,7 @@ export const mockChannels: readonly Channel[] = [
     authorizationStatus: 'TEST_STREAM',
     languages: ['en'],
     description: 'Échantillon Apple (multi-débit)',
+    descriptionAr: 'عيّنة من Apple (جودات متعددة)',
   },
   {
     id: 'test-mux-bbb',
@@ -108,5 +115,6 @@ export const mockChannels: readonly Channel[] = [
     authorizationStatus: 'TEST_STREAM',
     languages: ['en'],
     description: 'Big Buck Bunny (Mux, CC BY)',
+    descriptionAr: 'Big Buck Bunny (Mux، CC BY)',
   },
 ];

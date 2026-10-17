@@ -24,17 +24,20 @@ src/
     common/       AppText (type scale per TV/phone), shared primitives
     tv/           Focusable (D-pad focus: scale + ring overlay + glow)
     channel/      ChannelMonogram, ChannelCard
-    player/       (Phase 4)
-    mobile/       (Phase 3: bottom tabs)
+    player/       PlayerStatusCard (loading / retry / error / unavailable), ZapStrip
+    mobile/       BottomTabs
   domain/
     models/       Channel (+ isPlayable)
     usecases/     searchChannels (FR/AR normalization, category filter)
   data/
     catalog/      mockChannels: names only, stream.url = null, NOT_VERIFIED
     repositories/ ChannelRepository interface + LocalChannelRepository
-    storage/      KeyValueStore (AsyncStorage / in-memory), libraryStorage (favorites, history)
-  hooks/          useChannels / useChannel
-  localization/   strings (fr, ar), I18nProvider, RTL sync
+    storage/      KeyValueStore (AsyncStorage / in-memory), libraryStorage (favorites, history),
+                  preferencesStorage (language: system | fr | ar)
+  features/       library (LibraryProvider), player (usePlayback, useAutoHide)
+  services/       playback/retryPolicy
+  hooks/          useChannels / useChannel, useClock, useNetworkStatus
+  localization/   strings (fr, ar), I18nProvider, language preference + RTL switch
   theme/          tokens from docs/design-system.md
   utils/          platform (isTV)
 ```
@@ -55,6 +58,12 @@ Same JS bundle, same `applicationId` (`tn.tunisietv.app`). `app.config.ts` reads
 | Banner / icon | adaptive icon | `android:banner=@drawable/tv_banner`, TV icon (config-tv) |
 
 At runtime, UI differences use `Platform.isTV` (`src/utils/platform.ts`), which react-native-tvos sets from the device's UI mode.
+
+## Language and RTL
+The language preference (`system`, `fr`, `ar`) is stored locally and read before the first render (the splash screen stays up meanwhile). Android only applies `I18nManager.forceRTL` at process start, so:
+- **Switching between French and Arabic in Settings** saves the choice, sets the RTL flag, then restarts the app through the local Expo module `modules/app-restart` (Kotlin, autolinked from `modules/`). It relaunches the launcher activity in a fresh process.
+- **At startup**, if the native direction doesn't match the saved language (first launch on an Arabic device, device language changed), the app restarts once. The key `tunisietv:directionFix:v1` prevents a loop if the flag never sticks.
+- Layout uses `start`/`end` only. Media playback controls are pinned to `direction: 'ltr'` (Material guidance), and the phone back arrow flips to `arrow-forward` in Arabic.
 
 `android/` is generated (Continuous Native Generation) and **gitignored**. All native changes go through `app.config.ts` and config plugins, so `prebuild --clean` can't destroy hand edits. Don't edit `android/` by hand.
 

@@ -127,7 +127,8 @@ Data that the designs show but the app **won't fake** (we have no EPG source): p
 - The layouts mirror cleanly: rail → right edge, rows scroll right-to-left, chevrons flip. Use `start`/`end` styles only, never `left`/`right`.
 - Monograms (W1, AT9) and channel numbers stay LTR inside RTL (`writingDirection: 'ltr'`).
 - Progress bars fill from the start edge, so in RTL they fill right-to-left.
-- D-pad: in RTL, ◀ moves toward the **end** of a row. react-native-tvos focus engine follows layout direction; check this on the emulator in Phase 5.
+- D-pad: in RTL, ◀ moves toward the **end** of a row. Verified on the TV emulator (2026-10-17): rows, the Channels grid and the zap strip follow the layout direction, and ▶ from the first item enters the rail on the right.
+- Media controls (prev / play-pause / next) are **not** mirrored: their row is forced to LTR.
 
 ## 8. Still to do
 

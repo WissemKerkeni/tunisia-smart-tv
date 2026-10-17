@@ -58,3 +58,12 @@ Playback (Phase 4), 2026-10-17, test streams from `stream-rights-checklist.md` �
   - [x] Fixed: chrome text unreadable over bright video (stronger scrims)
   - [ ] Not tested: the NetInfo "offline" card and auto-reconnect when the network returns. The emulator's airplane mode did not cut its network
 - Unit: `retryPolicy` (2 s → 4 s → 8 s, then manual)
+
+Arabic / RTL (Phase 5), TV emulator (API 36, x86_64 release), 2026-10-17:
+- [x] Settings shows Appareil / Français / العربية; focus starts on the selected option
+- [x] Choosing العربية restarts the app into a fully mirrored UI: rail on the right, rows and grid right-to-left, Arabic strings and descriptions
+- [x] D-pad: ◀ moves forward along rows and the grid; ▶ from the first item enters the rail on the active tab
+- [x] Player: top bar and zap strip mirrored; media controls stay LTR (⏮ ⏯ ⏭)
+- [x] Choosing Français restarts back into LTR; favorites and history survive both restarts
+- [ ] Phone in Arabic: not run yet (back arrow flip, search input alignment)
+- Unit: language preference persistence + corrupt values, `resolveLocale`, FR/AR string key parity, Arabic plural forms

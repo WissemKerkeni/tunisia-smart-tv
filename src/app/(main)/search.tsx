@@ -20,7 +20,7 @@ const openPlayer = (c: Channel) => router.push({ pathname: '/player/[id]', param
 /** Search by name (FR/AR). No dedicated Stitch screen: built from the design-system components. */
 export default function SearchScreen() {
   const channels = useChannels();
-  const { t, isRTL } = useI18n();
+  const { t } = useI18n();
   const { isFavorite, toggleFavorite } = useLibrary();
   const [query, setQuery] = useState('');
   const [inputFocused, setInputFocused] = useState(false);
@@ -43,7 +43,8 @@ export default function SearchScreen() {
             autoCapitalize="none"
             returnKeyType="search"
             hasTVPreferredFocus
-            style={[styles.input, { textAlign: isRTL ? 'right' : 'left' }]}
+            // No explicit textAlign: Android swaps left/right under RTL, so the natural start edge is right.
+            style={styles.input}
           />
         </View>
         <AppText variant="meta" color={colors.textMuted}>

@@ -6,7 +6,7 @@ import { type Channel, isPlayable } from '@/domain/models/Channel';
 import { useI18n } from '@/localization/i18n';
 import { colors, minTouchTarget, radii, spacing } from '@/theme/tokens';
 
-import { channelTitle } from './ChannelCard';
+import { channelDescription, channelTitle } from './ChannelCard';
 import { ChannelMonogram } from './ChannelMonogram';
 
 /** Phone list row (Stitch "Chaînes Mobile"): monogram, number + name, meta, heart. */
@@ -46,7 +46,7 @@ export function ChannelListItem({
           )}
         </View>
         <AppText variant="meta" color={colors.textSecondary} numberOfLines={1}>
-          {channel.description ?? t.category[channel.category]}
+          {channelDescription(channel, locale) ?? t.category[channel.category]}
         </AppText>
       </View>
       <Pressable

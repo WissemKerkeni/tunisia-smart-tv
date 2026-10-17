@@ -49,8 +49,8 @@ const fr = {
   settings: {
     title: 'Préférences',
     language: 'Langue',
-    languageValue: 'Français',
-    languageHint: 'Suit la langue de l’appareil (choix manuel bientôt)',
+    languageHint: 'Passer de l’arabe au français (ou l’inverse) redémarre l’application',
+    languageSystem: 'Appareil',
     clearHistory: 'Effacer l’historique de lecture',
     clearHistoryHint: 'Supprime les chaînes récentes',
     clearHistoryAction: 'Réinitialiser',
@@ -62,6 +62,7 @@ const fr = {
     select: 'Sélectionner',
     navigate: 'Naviguer',
     back: 'Retour',
+    backKey: 'RETOUR',
   },
   streamUnavailable: 'Flux non disponible',
   streamUnavailableHint: 'Aucune source autorisée n’est encore configurée pour cette chaîne.',
@@ -105,7 +106,9 @@ const ar: Strings = {
   removeFavorite: 'إزالة من المفضلة',
   allChannels: 'كل القنوات',
   all: 'الكل',
-  channelCount: (n: number) => `${n} قناة`,
+  // Arabic plural: 1 قناة واحدة, 2 قناتان, 3–10 قنوات, 11+ قناة.
+  channelCount: (n: number) =>
+    n === 1 ? 'قناة واحدة' : n === 2 ? 'قناتان' : n >= 3 && n <= 10 ? `${n} قنوات` : `${n} قناة`,
   category: {
     news: 'أخبار',
     entertainment: 'ترفيه',
@@ -137,8 +140,8 @@ const ar: Strings = {
   settings: {
     title: 'التفضيلات',
     language: 'اللغة',
-    languageValue: 'العربية',
-    languageHint: 'تتبع لغة الجهاز (الاختيار اليدوي قريبًا)',
+    languageHint: 'التبديل بين العربية والفرنسية يعيد تشغيل التطبيق',
+    languageSystem: 'الجهاز',
     clearHistory: 'مسح سجل المشاهدة',
     clearHistoryHint: 'يحذف القنوات الأخيرة',
     clearHistoryAction: 'مسح',
@@ -150,6 +153,7 @@ const ar: Strings = {
     select: 'اختيار',
     navigate: 'تنقل',
     back: 'رجوع',
+    backKey: 'رجوع',
   },
   streamUnavailable: 'البث غير متوفر',
   streamUnavailableHint: 'لم يتم إعداد مصدر مرخّص لهذه القناة بعد.',
