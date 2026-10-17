@@ -20,7 +20,7 @@
 - First Gradle build ≈ 17+ min on this machine and network. Compiling 4 ABIs saturates the laptop. The script now builds **phone = arm64-v8a**, **TV = armeabi-v7a + arm64-v8a + x86_64**.
 - Slow network: Gradle HTTP timeouts raised to 180 s with 6 retries (one Maven jar download had timed out).
 - NDK auto-install by Gradle failed on a stale `Sdk\.temp` folder. Fixed by installing the NDK with `sdkmanager`.
-- **Android Studio holds a handle on `android/`** (the project has `.idea/`), so `expo prebuild --clean` fails with EBUSY. Workarounds: close Android Studio before prebuild, or build in a source copy (`D:\Workspace\tunisia-smart-tv-tvbuild`, `node_modules` junctioned) as was done for the first TV build.
+- **Android Studio holds a handle on `android/`** (the project has `.idea/`), so `expo prebuild --clean` fails with EBUSY while it's open. **Close Android Studio before building.** Phases 3–6 were built in a temporary source copy to work around this; the copy was removed on 2026-10-17, and builds now run in this folder (a clean TV prebuild + build was verified there the same day).
 - The phone APK is 43.5 MiB (over the 30 MiB chat-upload limit). It was delivered zipped (26.6 MiB). R8 / resource shrinking would reduce it later (Phase 6).
 
 ## Stitch notes
