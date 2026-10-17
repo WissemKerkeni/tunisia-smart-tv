@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TunisieTV — Lecteur En direct</title>
+<!-- Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-lowest": "#0e0e11",
+            "surface-container": "#1f1f22",
+            "secondary-fixed": "#ffdea4",
+            "on-surface-variant": "#e9bcb6",
+            "on-primary-container": "#fff8f7",
+            "secondary-container": "#5d4514",
+            "on-tertiary": "#00344b",
+            "surface-variant": "#353438",
+            "outline": "#af8782",
+            "surface-dim": "#131316",
+            "on-secondary-fixed": "#261900",
+            "error-container": "#93000a",
+            "on-error-container": "#ffdad6",
+            "on-surface": "#e5e1e6",
+            "secondary-fixed-dim": "#e4c285",
+            "outline-variant": "#5f3f3b",
+            "on-primary-fixed": "#410001",
+            "tertiary-fixed-dim": "#81cfff",
+            "on-secondary": "#412d00",
+            "on-tertiary-fixed": "#001e2d",
+            "on-secondary-fixed-variant": "#5a4312",
+            "secondary": "#e4c285",
+            "tertiary": "#81cfff",
+            "background": "#131316",
+            "surface-container-high": "#2a2a2d",
+            "on-secondary-container": "#d5b478",
+            "inverse-surface": "#e5e1e6",
+            "on-tertiary-fixed-variant": "#004c6b",
+            "surface": "#131316",
+            "primary": "#ffb4aa",
+            "on-background": "#e5e1e6",
+            "surface-tint": "#ffb4aa",
+            "surface-bright": "#39393c",
+            "on-primary-fixed-variant": "#930008",
+            "surface-container-highest": "#353438",
+            "inverse-primary": "#c0000e",
+            "surface-container-low": "#1b1b1e",
+            "primary-fixed-dim": "#ffb4aa",
+            "on-primary": "#690004",
+            "tertiary-container": "#007baa",
+            "on-error": "#690005",
+            "primary-fixed": "#ffdad5",
+            "error": "#ffb4ab",
+            "tertiary-fixed": "#c6e7ff",
+            "on-tertiary-container": "#f6faff",
+            "inverse-on-surface": "#303033",
+            "primary-container": "#e70013"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            "headline": ["Sora", "sans-serif"],
+            "display": ["Sora", "sans-serif"],
+            "body": ["Manrope", "sans-serif"],
+            "label": ["Manrope", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-active {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Custom glow and subtle TV glow effects */
+    .glow-red {
+      box-shadow: 0 0 24px rgba(231, 0, 19, 0.45), 0 0 4px rgba(231, 0, 19, 0.8);
+    }
+    .glow-red-sm {
+      box-shadow: 0 0 10px rgba(231, 0, 19, 0.6);
+    }
+    /* Hide scrollbars for smooth horizontal zapping carousel */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased min-h-screen selection:bg-primary-container selection:text-on-primary-container pb-24">
+<!-- Mobile Portrait Shell Container -->
+<div class="max-w-md mx-auto w-full min-h-screen flex flex-col bg-surface relative shadow-2xl overflow-x-hidden">
+<!-- Top Video Viewport (16:9 Aspect Ratio) -->
+<div class="relative w-full aspect-video bg-surface-container-lowest overflow-hidden select-none group">
+<!-- Broadcast Background Video Stream -->
+<img alt="Studio de diffusion télévisée en direct de TunisieTV avec régie et écrans de contrôle" class="absolute inset-0 w-full h-full object-cover transform scale-105 filter brightness-90 contrast-105" src="https://lh3.googleusercontent.com/aida/AEtjO1VfstlX75sY_uyNJ1zQyEzYbqpKqK-qJboprMF_Wr1NTlNypwdKfhZ96WI86BCfMwmw9dFihAd9ddenfd1qdzx1SHOZ3ILFTQPiWHdoax-I8W8mj0eIcuhHkOfSTgHt_Vl7R6gGBW8mmMxX-2vZ02lSYXGlVlCMTFF8zCHHe6PhPxvDttfY-e6cG0XNP3obZ313j8dcCQx3i19whmih5g__Spv1lg2j12oMFDjS0vKDLIjrfKuCK2jhWCk"/>
+<!-- Dark Gradient Scrims for TV Legibility -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-black/80 pointer-events-none"></div>
+<div class="absolute inset-0 bg-radial from-transparent to-black/40 pointer-events-none"></div>
+<!-- Live Stream Top Overlay Bar -->
+<div class="absolute top-0 left-0 right-0 p-3 pt-4 flex items-center justify-between z-20">
+<!-- Back Navigation & Live Pill -->
+<div class="flex items-center gap-2">
+<button aria-label="Retour" class="w-9 h-9 rounded-full bg-surface-container-lowest/70 backdrop-blur-md flex items-center justify-center text-on-surface hover:bg-surface-variant/40 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-lg">arrow_back</span>
+</button>
+<!-- Red Live Badge -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-container text-on-primary-container text-[11px] font-headline font-bold uppercase tracking-wider glow-red-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+<span>EN DIRECT</span>
+</div>
+<!-- Network Buffering Indicator -->
+<div class="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/60 backdrop-blur-md border border-outline-variant/30 text-[10px] text-on-surface-variant">
+<span class="material-symbols-outlined text-xs animate-spin text-primary">sync</span>
+<span>Direct HD</span>
+</div>
+</div>
+<!-- Trailing Stream Actions (Cast & Audio/Subtitles) -->
+<div class="flex items-center gap-1.5">
+<button aria-label="Diffuser via Google Cast ou AirPlay" class="w-9 h-9 rounded-full bg-surface-container-lowest/70 backdrop-blur-md flex items-center justify-center text-on-surface hover:bg-surface-variant/40 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-lg">cast</span>
+</button>
+<button aria-label="Plein écran" class="w-9 h-9 rounded-full bg-surface-container-lowest/70 backdrop-blur-md flex items-center justify-center text-on-surface hover:bg-surface-variant/40 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-lg">fullscreen</span>
+</button>
+</div>
+</div>
+<!-- Center Playback Controls (Previous / Play-Pause / Next Channel) -->
+<div class="absolute inset-0 flex items-center justify-center gap-6 z-20 pointer-events-auto">
+<!-- Previous Channel Skip Button -->
+<button class="w-10 h-10 rounded-full bg-surface-container-lowest/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-on-surface hover:bg-surface-variant/50 active:scale-95 transition-all" title="Chaîne précédente" type="button">
+<span class="material-symbols-outlined text-xl">skip_previous</span>
+</button>
+<!-- Main Play/Pause Button with Tunisian Red Glow -->
+<button class="w-14 h-14 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center glow-red active:scale-90 transition-transform" title="Mettre en pause" type="button">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">pause</span>
+</button>
+<!-- Next Channel Skip Button -->
+<button class="w-10 h-10 rounded-full bg-surface-container-lowest/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-on-surface hover:bg-surface-variant/50 active:scale-95 transition-all" title="Chaîne suivante" type="button">
+<span class="material-symbols-outlined text-xl">skip_next</span>
+</button>
+</div>
+<!-- Bottom Player Info Bar (Timeline, Quality & Time) -->
+<div class="absolute bottom-0 left-0 right-0 p-3 pb-2 z-20 flex flex-col gap-1.5 bg-gradient-to-t from-black/95 to-transparent">
+<!-- Live Scrubber Progress Bar -->
+<div class="relative w-full h-1.5 bg-surface-variant/70 rounded-full overflow-visible flex items-center cursor-pointer">
+<div class="h-full bg-primary-container rounded-full relative" style="width: 78%;">
+<!-- Glowing Red Playhead Point -->
+<div class="absolute right-0 -top-1 w-3.5 h-3.5 rounded-full bg-white border-2 border-primary-container shadow-md glow-red-sm transform translate-x-1/2"></div>
+</div>
+</div>
+<div class="flex items-center justify-between text-[11px] font-label text-on-surface-variant pt-0.5">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-on-surface">20:14</span>
+<span class="text-outline">/</span>
+<span class="text-primary-container font-medium">Direct (20:45)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high/80 text-[10px] text-secondary font-medium tracking-wide border border-outline-variant/40">
+              Auto (1080p)
+            </span>
+<button class="text-on-surface hover:text-primary transition-colors" title="Paramètres du flux" type="button">
+<span class="material-symbols-outlined text-base">tune</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-4 pt-3 flex flex-col gap-4">
+<!-- Channel & Current Program Section -->
+<section class="bg-surface-container-low rounded-2xl p-4 border border-outline-variant/20 shadow-md">
+<div class="flex items-start justify-between gap-3">
+<!-- Monogram Badge & Title Cluster -->
+<div class="flex items-center gap-3">
+<!-- Channel Monogram W1 -->
+<div class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-surface-container-highest to-surface-container flex items-center justify-center border-2 border-primary-container/80 shadow-md flex-shrink-0">
+<span class="font-headline font-extrabold text-base text-on-surface tracking-tighter">W1</span>
+<div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-primary-container rounded-full border-2 border-surface flex items-center justify-center">
+<span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="font-headline font-bold text-sm text-on-surface leading-tight">Wataniya 1</h1>
+<span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-[10px] font-label px-1.5 py-0.2 rounded bg-surface-container-high text-secondary border border-secondary-container/40">National</span>
+</div>
+<h2 class="font-headline font-bold text-base text-on-surface mt-0.5">Journal du soir</h2>
+<p class="font-label text-xs text-on-surface-variant mt-0.5">20:00 – 20:45 · Information &amp; Débats</p>
+</div>
+</div>
+<!-- Channel Share Action -->
+<button class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-variant transition-colors active:scale-95" title="Partager" type="button">
+<span class="material-symbols-outlined text-base">share</span>
+</button>
+</div>
+<!-- Quick Interaction Bar -->
+<div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-outline-variant/20 text-xs font-label">
+<!-- Plein Écran -->
+<button class="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-base">crop_free</span>
+<span class="font-medium">Plein écran</span>
+</button>
+<!-- Favoris (Active State) -->
+<button class="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-primary-container/15 text-primary hover:bg-primary-container/25 active:scale-95 transition-all border border-primary-container/30" type="button">
+<span class="material-symbols-outlined text-base text-primary-container" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+<span class="font-semibold text-on-primary-container">Favoris</span>
+</button>
+<!-- Guide Chaîne -->
+<button class="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-base">calendar_view_day</span>
+<span class="font-medium">Guide</span>
+</button>
+</div>
+</section>
+<!-- Compact State Alert Card (Inline Error/Notice banner) -->
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-surface-container-lowest via-surface-container-low to-surface-container p-3.5 border border-primary-container/40 flex items-center justify-between gap-3 shadow-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-error-container/40 border border-error/30 flex items-center justify-center flex-shrink-0 text-error">
+<span class="material-symbols-outlined text-lg">signal_wifi_bad</span>
+</div>
+<div>
+<p class="font-headline text-xs font-semibold text-on-surface leading-tight">Lecture impossible</p>
+<p class="font-label text-[11px] text-on-surface-variant">Vérifiez votre connexion réseau</p>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-primary-container hover:bg-primary-container/90 text-on-primary-container text-xs font-label font-bold flex-shrink-0 active:scale-95 transition-transform glow-red-sm" type="button">
+          Réessayer
+        </button>
+</div>
+<!-- "À suivre" Section (Upcoming TV Guide Rows) -->
+<section class="flex flex-col gap-2.5">
+<div class="flex items-center justify-between px-0.5">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-3.5 rounded-full bg-primary-container"></span>
+<h3 class="font-headline font-bold text-sm text-on-surface">À suivre</h3>
+</div>
+<span class="font-label text-xs text-on-surface-variant">Wataniya 1</span>
+</div>
+<div class="bg-surface-container-low rounded-2xl border border-outline-variant/15 overflow-hidden divide-y divide-outline-variant/15">
+<!-- Row 1 -->
+<div class="p-3 flex items-center justify-between gap-3 hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-3">
+<span class="font-headline font-semibold text-xs text-secondary px-2 py-1 rounded bg-secondary-container/30 border border-secondary/20">
+                20:45
+              </span>
+<div>
+<h4 class="font-body font-semibold text-xs text-on-surface">Météo &amp; Bulletin National</h4>
+<p class="font-label text-[11px] text-on-surface-variant">Durée : 5 min</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/40 active:scale-95 transition-all" title="Ajouter un rappel" type="button">
+<span class="material-symbols-outlined text-base">notifications_none</span>
+</button>
+</div>
+<!-- Row 2 -->
+<div class="p-3 flex items-center justify-between gap-3 hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-3">
+<span class="font-headline font-semibold text-xs text-on-surface-variant px-2 py-1 rounded bg-surface-container-high">
+                20:50
+              </span>
+<div>
+<div class="flex items-center gap-1.5">
+<h4 class="font-body font-semibold text-xs text-on-surface">Feuilleton Événement : Bab El Hara</h4>
+<span class="px-1 py-0.2 rounded bg-primary-container/20 text-primary text-[9px] font-bold">SOIRÉE</span>
+</div>
+<p class="font-label text-[11px] text-on-surface-variant">Saison 3 · Épisode 14 (55 min)</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-surface-variant/40 active:scale-95 transition-all" title="Ajouter un rappel" type="button">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+</button>
+</div>
+<!-- Row 3 -->
+<div class="p-3 flex items-center justify-between gap-3 hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-3">
+<span class="font-headline font-semibold text-xs text-on-surface-variant px-2 py-1 rounded bg-surface-container-high">
+                21:45
+              </span>
+<div>
+<h4 class="font-body font-semibold text-xs text-on-surface">Le Grand Débat Économique</h4>
+<p class="font-label text-[11px] text-on-surface-variant">En direct du studio 2 · 1h15</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/40 active:scale-95 transition-all" title="Ajouter un rappel" type="button">
+<span class="material-symbols-outlined text-base">notifications_none</span>
+</button>
+</div>
+</div>
+</section>
+<!-- "Autres chaînes en direct" Section (Quick Zapping Horizontal Carousel) -->
+<section class="flex flex-col gap-2.5 pt-1">
+<div class="flex items-center justify-between px-0.5">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-3.5 rounded-full bg-secondary"></span>
+<h3 class="font-headline font-bold text-sm text-on-surface">Autres chaînes en direct</h3>
+</div>
+<span class="font-label text-xs text-on-surface-variant">Zapping rapide</span>
+</div>
+<!-- Horizontal Scrollable Channel Cards -->
+<div class="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2 pt-0.5 -mx-4 px-4">
+<!-- Channel Card: Wataniya 2 -->
+<div class="flex-shrink-0 w-36 bg-surface-container-low hover:bg-surface-container-high rounded-xl p-2.5 border border-outline-variant/20 cursor-pointer active:scale-95 transition-all flex flex-col justify-between h-32">
+<div class="flex items-start justify-between">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center border border-outline-variant/40">
+<span class="font-headline font-bold text-xs text-on-surface">W2</span>
+</div>
+<span class="flex items-center gap-1 text-[9px] font-bold text-primary-container px-1.5 py-0.5 rounded-full bg-primary-container/15">
+<span class="w-1 h-1 rounded-full bg-primary-container animate-ping"></span> DIRECT
+              </span>
+</div>
+<div>
+<p class="font-headline font-bold text-xs text-on-surface truncate">Wataniya 2</p>
+<p class="font-label text-[10px] text-on-surface-variant truncate">Séance Parlementaire</p>
+</div>
+</div>
+<!-- Channel Card: El Hiwar Ettounsi -->
+<div class="flex-shrink-0 w-36 bg-surface-container-low hover:bg-surface-container-high rounded-xl p-2.5 border border-outline-variant/20 cursor-pointer active:scale-95 transition-all flex flex-col justify-between h-32">
+<div class="flex items-start justify-between">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center border border-outline-variant/40">
+<span class="font-headline font-bold text-xs text-on-surface">EH</span>
+</div>
+<span class="flex items-center gap-1 text-[9px] font-bold text-primary-container px-1.5 py-0.5 rounded-full bg-primary-container/15">
+<span class="w-1 h-1 rounded-full bg-primary-container"></span> DIRECT
+              </span>
+</div>
+<div>
+<p class="font-headline font-bold text-xs text-on-surface truncate">El Hiwar Ettounsi</p>
+<p class="font-label text-[10px] text-on-surface-variant truncate">Fekret Sami Fehri</p>
+</div>
+</div>
+<!-- Channel Card: Nessma El Jadida -->
+<div class="flex-shrink-0 w-36 bg-surface-container-low hover:bg-surface-container-high rounded-xl p-2.5 border border-outline-variant/20 cursor-pointer active:scale-95 transition-all flex flex-col justify-between h-32">
+<div class="flex items-start justify-between">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center border border-outline-variant/40">
+<span class="font-headline font-bold text-xs text-on-surface">NS</span>
+</div>
+<span class="flex items-center gap-1 text-[9px] font-bold text-primary-container px-1.5 py-0.5 rounded-full bg-primary-container/15">
+<span class="w-1 h-1 rounded-full bg-primary-container"></span> DIRECT
+              </span>
+</div>
+<div>
+<p class="font-headline font-bold text-xs text-on-surface truncate">Nessma El Jadida</p>
+<p class="font-label text-[10px] text-on-surface-variant truncate">Feuilleton Khalil</p>
+</div>
+</div>
+<!-- Channel Card: Hannibal TV -->
+<div class="flex-shrink-0 w-36 bg-surface-container-low hover:bg-surface-container-high rounded-xl p-2.5 border border-outline-variant/20 cursor-pointer active:scale-95 transition-all flex flex-col justify-between h-32">
+<div class="flex items-start justify-between">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center border border-outline-variant/40">
+<span class="font-headline font-bold text-xs text-on-surface">HTV</span>
+</div>
+<span class="flex items-center gap-1 text-[9px] font-bold text-primary-container px-1.5 py-0.5 rounded-full bg-primary-container/15">
+<span class="w-1 h-1 rounded-full bg-primary-container"></span> DIRECT
+              </span>
+</div>
+<div>
+<p class="font-headline font-bold text-xs text-on-surface truncate">Hannibal TV</p>
+<p class="font-label text-[10px] text-on-surface-variant truncate">Al Mousameh Karim</p>
+</div>
+</div>
+<!-- Channel Card: Attessia TV -->
+<div class="flex-shrink-0 w-36 bg-surface-container-low hover:bg-surface-container-high rounded-xl p-2.5 border border-outline-variant/20 cursor-pointer active:scale-95 transition-all flex flex-col justify-between h-32">
+<div class="flex items-start justify-between">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center border border-outline-variant/40">
+<span class="font-headline font-bold text-xs text-on-surface">AT9</span>
+</div>
+<span class="flex items-center gap-1 text-[9px] font-bold text-primary-container px-1.5 py-0.5 rounded-full bg-primary-container/15">
+<span class="w-1 h-1 rounded-full bg-primary-container"></span> DIRECT
+              </span>
+</div>
+<div>
+<p class="font-headline font-bold text-xs text-on-surface truncate">Attessia TV</p>
+<p class="font-label text-[10px] text-on-surface-variant truncate">Rendez-vous 9</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Shared Component Anchor) -->
+<!-- Destination Rule: Top-level live player screen maps to 'En direct' as active tab -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-4 bg-surface-container-lowest dark:bg-surface-container-lowest pb-safe">
+<!-- Tab 1: En direct (Active - Semantic Mapping Match) -->
+<button class="flex flex-col items-center justify-center text-primary-container dark:text-primary-container font-semibold gap-1 active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">live_tv</span>
+<span class="font-label text-xs">En direct</span>
+</button>
+<!-- Tab 2: Guide TV -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant font-normal gap-1 hover:text-on-surface dark:hover:text-on-surface transition-colors duration-150 active:scale-95" type="button">
+<span class="material-symbols-outlined text-xl">calendar_today</span>
+<span class="font-label text-xs">Guide TV</span>
+</button>
+<!-- Tab 3: Replay -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant font-normal gap-1 hover:text-on-surface dark:hover:text-on-surface transition-colors duration-150 active:scale-95" type="button">
+<span class="material-symbols-outlined text-xl">history</span>
+<span class="font-label text-xs">Replay</span>
+</button>
+<!-- Tab 4: Favoris -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant font-normal gap-1 hover:text-on-surface dark:hover:text-on-surface transition-colors duration-150 active:scale-95" type="button">
+<span class="material-symbols-outlined text-xl">bookmark</span>
+<span class="font-label text-xs">Favoris</span>
+</button>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<title>TunisieTV — Favoris &amp; Paramètres</title>
+<meta content="width=1920, height=1080, initial-scale=1.0" name="viewport"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim as required -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline": "#af8782",
+            "inverse-surface": "#e5e1e6",
+            "on-secondary-fixed": "#261900",
+            "on-primary-fixed-variant": "#930008",
+            "surface-container-low": "#1b1b1e",
+            "tertiary-fixed-dim": "#81cfff",
+            "tertiary": "#81cfff",
+            "primary-container": "#e70013",
+            "surface-variant": "#353438",
+            "surface": "#131316",
+            "secondary-fixed": "#ffdea4",
+            "on-tertiary-container": "#f6faff",
+            "inverse-on-surface": "#303033",
+            "background": "#131316",
+            "tertiary-container": "#007baa",
+            "on-secondary": "#412d00",
+            "on-primary-container": "#fff8f7",
+            "surface-container-lowest": "#0e0e11",
+            "on-tertiary-fixed": "#001e2d",
+            "on-surface": "#e5e1e6",
+            "outline-variant": "#5f3f3b",
+            "primary-fixed-dim": "#ffb4aa",
+            "on-secondary-fixed-variant": "#5a4312",
+            "on-error-container": "#ffdad6",
+            "secondary-fixed-dim": "#e4c285",
+            "surface-dim": "#131316",
+            "surface-container-high": "#2a2a2d",
+            "error": "#ffb4ab",
+            "secondary-container": "#5d4514",
+            "on-tertiary": "#00344b",
+            "error-container": "#93000a",
+            "surface-tint": "#ffb4aa",
+            "on-primary-fixed": "#410001",
+            "on-error": "#690005",
+            "surface-container": "#1f1f22",
+            "primary-fixed": "#ffdad5",
+            "on-background": "#e5e1e6",
+            "surface-container-highest": "#353438",
+            "surface-bright": "#39393c",
+            "on-tertiary-fixed-variant": "#004c6b",
+            "secondary": "#e4c285",
+            "inverse-primary": "#c0000e",
+            "tertiary-fixed": "#c6e7ff",
+            "primary": "#ffb4aa",
+            "on-surface-variant": "#e9bcb6",
+            "on-primary": "#690004",
+            "on-secondary-container": "#d5b478"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {},
+          "fontFamily": {
+            "headline": [
+              "Sora"
+            ],
+            "display": [
+              "Sora"
+            ],
+            "body": [
+              "Manrope"
+            ],
+            "label": [
+              "Manrope"
+            ]
+          },
+          "fontSize": {}
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Manrope', sans-serif;
+      overflow: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-sora {
+      font-family: 'Sora', sans-serif;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Ambient TV glow background */
+    .tv-scrim {
+      background: radial-gradient(circle at 18% 12%, rgba(231, 0, 19, 0.08) 0%, transparent 45%),
+                  radial-gradient(circle at 85% 85%, rgba(0, 123, 170, 0.05) 0%, transparent 40%),
+                  #0e0e11;
+    }
+    /* D-Pad Focus Ring & Red Glow */
+    .tv-focus-active {
+      transform: scale(1.06);
+      box-shadow: 0 0 0 4px #ffffff, 0 0 28px rgba(231, 0, 19, 0.65);
+      z-index: 30;
+    }
+    .tv-focus-subtle {
+      box-shadow: 0 0 0 2px #e5e1e6, 0 0 16px rgba(231, 0, 19, 0.35);
+    }
+  </style>
+</head>
+<body class="w-[1920px] h-[1080px] tv-scrim text-on-surface relative overflow-hidden select-none m-0 p-0 flex">
+<!-- ========================================================================= -->
+<!-- LEFT FIXED NAVIGATION RAIL (Executed verbatim per Shared Components JSON) -->
+<!-- ========================================================================= -->
+<aside class="fixed top-0 start-0 h-full w-24 z-50 flex flex-col justify-between items-center py-8 bg-surface-container-low shadow-2xl">
+<!-- Top: Logo / Brand Anchor -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 rounded-xl bg-primary-container flex items-center justify-center shadow-[0_0_16px_rgba(231,0,19,0.5)]">
+<span class="font-display font-extrabold text-on-primary-container text-xl tracking-tight">TN</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-display font-bold text-on-surface text-[11px] tracking-wider">Tunisie<span class="text-primary-container">TV</span></span>
+<span class="text-[9px] text-on-surface-variant font-label tracking-tight opacity-70">Direct</span>
+</div>
+</div>
+<!-- Center Navigation Cluster (Active: Favoris mapped via semantic hierarchy) -->
+<nav aria-label="Menu principal" class="flex flex-col items-center gap-4 w-full px-2">
+<!-- Accueil -->
+<button class="flex flex-col items-center justify-center w-16 h-16 rounded-xl text-on-surface-variant p-3 opacity-80 hover:opacity-100 hover:scale-105 hover:text-on-surface transition-all duration-200 focus:outline-none" title="Accueil">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-[10px] font-label font-medium mt-1">Accueil</span>
+</button>
+<!-- Chaînes -->
+<button class="flex flex-col items-center justify-center w-16 h-16 rounded-xl text-on-surface-variant p-3 opacity-80 hover:opacity-100 hover:scale-105 hover:text-on-surface transition-all duration-200 focus:outline-none" title="Chaînes">
+<span class="material-symbols-outlined text-2xl">live_tv</span>
+<span class="text-[10px] font-label font-medium mt-1">Chaînes</span>
+</button>
+<!-- Recherche -->
+<button class="flex flex-col items-center justify-center w-16 h-16 rounded-xl text-on-surface-variant p-3 opacity-80 hover:opacity-100 hover:scale-105 hover:text-on-surface transition-all duration-200 focus:outline-none" title="Recherche">
+<span class="material-symbols-outlined text-2xl">search</span>
+<span class="text-[10px] font-label font-medium mt-1">Recherche</span>
+</button>
+<!-- Favoris (ACTIVE ITEM: Injected style_active_navigation per JSON) -->
+<button class="flex flex-col items-center justify-center w-16 h-16 text-on-primary-container bg-primary-container rounded-xl p-3 shadow-[0_0_16px_rgba(231,0,19,0.45)] focus:scale-105 focus:outline-none focus:ring-4 focus:ring-on-surface transition-all duration-200" title="Favoris">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-[10px] font-label font-bold mt-1">Favoris</span>
+</button>
+<!-- Paramètres -->
+<button class="flex flex-col items-center justify-center w-16 h-16 rounded-xl text-on-surface-variant p-3 opacity-80 hover:opacity-100 hover:scale-105 hover:text-on-surface transition-all duration-200 focus:outline-none" title="Paramètres">
+<span class="material-symbols-outlined text-2xl">settings</span>
+<span class="text-[10px] font-label font-medium mt-1">Paramètres</span>
+</button>
+</nav>
+<!-- Bottom: Footer Meta & Profile Tab -->
+<div class="flex flex-col items-center gap-3">
+<div class="flex flex-col items-center text-center">
+<span class="text-[11px] font-headline font-bold text-on-surface">20:14</span>
+<span class="text-[9px] text-secondary tracking-widest uppercase">TUNIS</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-white/10 flex items-center justify-center hover:scale-105 transition-transform" title="Profil">
+<span class="material-symbols-outlined text-on-surface text-xl">account_circle</span>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- MAIN TV 10-FOOT CANVAS -->
+<!-- ========================================================================= -->
+<main class="ms-24 flex-1 h-full px-12 pt-10 pb-20 flex flex-col justify-between overflow-hidden">
+<!-- TV TOP BAR & SYSTEM METRICS -->
+<header class="flex items-center justify-between pb-6 border-b border-surface-variant/30">
+<div class="flex items-center gap-4">
+<div>
+<div class="flex items-center gap-2 text-xs font-label text-on-surface-variant uppercase tracking-wider">
+<span>TunisieTV</span>
+<span class="text-primary-container">•</span>
+<span>Espace Personnel</span>
+</div>
+<h1 class="font-headline font-extrabold text-3xl tracking-tight text-on-surface mt-0.5">
+            Favoris &amp; Paramètres
+          </h1>
+</div>
+</div>
+<!-- Live Broadcast / Connectivity Status Chips -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container border border-surface-variant/40">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse"></span>
+<span class="text-xs font-semibold tracking-wide text-on-surface">TNT HD Direct</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container border border-surface-variant/40">
+<span class="material-symbols-outlined text-tertiary text-sm">wifi</span>
+<span class="text-xs font-medium text-on-surface">Fibre 100 Mbps</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high border border-surface-variant/50">
+<span class="material-symbols-outlined text-secondary text-sm">tv</span>
+<span class="text-xs font-medium text-on-surface">TV SALON</span>
+</div>
+</div>
+</header>
+<!-- TV WORKSPACE GRID: Split 62% Left Channels & 38% Right Settings -->
+<div class="grid grid-cols-12 gap-8 flex-1 py-6 items-start overflow-hidden">
+<!-- ========================================================== -->
+<!-- LEFT SECTION (~62%): Favoris & Récemment regardés -->
+<!-- ========================================================== -->
+<section class="col-span-7 flex flex-col justify-between h-full space-y-5">
+<!-- BLOCK 1: MES FAVORIS (Top 4 Ch Grid) -->
+<div class="flex flex-col">
+<div class="flex items-baseline justify-between mb-3">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary-container text-xl" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<h2 class="font-headline font-bold text-xl text-on-surface">Mes favoris</h2>
+<span class="text-xs font-medium text-secondary bg-secondary-container/40 px-2.5 py-0.5 rounded-full border border-secondary/20">4 chaînes enregistrées</span>
+</div>
+<span class="text-xs text-on-surface-variant/80 font-label">Appuyez sur <kbd class="px-1.5 py-0.5 rounded bg-surface-variant text-on-surface font-mono text-[10px]">OK</kbd> pour lancer</span>
+</div>
+<!-- Channel Cards Grid (Row of 4 Large Focusable Monogram Tiles) -->
+<div class="grid grid-cols-4 gap-4">
+<!-- Ch 01: Wataniya 1 (Unfocused) -->
+<div class="group relative bg-surface-container-low rounded-xl p-4 flex flex-col justify-between border border-surface-variant/40 h-48 opacity-85 transition-all duration-200">
+<div class="flex items-start justify-between">
+<span class="text-xs font-headline font-bold text-on-surface-variant">01</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary-container/20 text-primary border border-primary-container/40">DIRECT</span>
+</div>
+<!-- Monogram Art Tile -->
+<div class="w-16 h-16 self-center rounded-xl bg-gradient-to-br from-surface-container-high to-surface-container flex items-center justify-center border border-white/5 shadow-inner">
+<span class="font-display font-extrabold text-2xl text-on-surface">W1</span>
+</div>
+<div class="mt-2">
+<div class="font-headline font-bold text-sm text-on-surface truncate">Wataniya 1</div>
+<div class="text-xs text-on-surface-variant truncate">Journal de 20h</div>
+</div>
+</div>
+<!-- Ch 05: El Hiwar Ettounsi (FOCUSED 10-FOOT D-PAD STATE) -->
+<div class="relative bg-surface-container rounded-xl p-4 flex flex-col justify-between tv-focus-active transition-all duration-200 cursor-pointer">
+<!-- Top tags -->
+<div class="flex items-start justify-between">
+<span class="text-xs font-headline font-extrabold text-on-surface">05</span>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-black bg-primary-container text-on-primary-container tracking-wider shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+                  DIRECT
+                </div>
+</div>
+<!-- Monogram Art Tile (Elevated) -->
+<div class="w-16 h-16 self-center rounded-xl bg-gradient-to-br from-primary-container/30 to-surface-container-highest flex items-center justify-center border-2 border-primary-container/60 shadow-lg">
+<span class="font-display font-black text-2xl text-on-primary-container">EH</span>
+</div>
+<!-- Meta + Action Tag -->
+<div class="mt-2">
+<div class="flex items-center justify-between">
+<span class="font-headline font-bold text-sm text-on-surface truncate">El Hiwar Ettounsi</span>
+</div>
+<div class="text-xs text-secondary-fixed truncate font-medium">Fekret Sami Fehri</div>
+<div class="mt-2 w-full py-1 rounded-md bg-primary-container text-on-primary-container font-headline font-bold text-xs flex items-center justify-center gap-1.5 shadow-md">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span>OK Regarder</span>
+</div>
+</div>
+</div>
+<!-- Ch 04: Nessma El Jadida (Unfocused) -->
+<div class="relative bg-surface-container-low rounded-xl p-4 flex flex-col justify-between border border-surface-variant/40 h-48 opacity-85 transition-all duration-200">
+<div class="flex items-start justify-between">
+<span class="text-xs font-headline font-bold text-on-surface-variant">04</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary-container/20 text-primary border border-primary-container/40">DIRECT</span>
+</div>
+<div class="w-16 h-16 self-center rounded-xl bg-gradient-to-br from-surface-container-high to-surface-container flex items-center justify-center border border-white/5 shadow-inner">
+<span class="font-display font-extrabold text-2xl text-on-surface">NS</span>
+</div>
+<div class="mt-2">
+<div class="font-headline font-bold text-sm text-on-surface truncate">Nessma El Jadida</div>
+<div class="text-xs text-on-surface-variant truncate">Feuilleton Khalil</div>
+</div>
+</div>
+<!-- Ch 02: Hannibal TV (Unfocused) -->
+<div class="relative bg-surface-container-low rounded-xl p-4 flex flex-col justify-between border border-surface-variant/40 h-48 opacity-85 transition-all duration-200">
+<div class="flex items-start justify-between">
+<span class="text-xs font-headline font-bold text-on-surface-variant">02</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary-container/20 text-primary border border-primary-container/40">DIRECT</span>
+</div>
+<div class="w-16 h-16 self-center rounded-xl bg-gradient-to-br from-surface-container-high to-surface-container flex items-center justify-center border border-white/5 shadow-inner">
+<span class="font-display font-extrabold text-2xl text-on-surface">HTV</span>
+</div>
+<div class="mt-2">
+<div class="font-headline font-bold text-sm text-on-surface truncate">Hannibal TV</div>
+<div class="text-xs text-on-surface-variant truncate">Al Mousameh Karim</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BLOCK 2: Add to favorites / Quick Discovery Card -->
+<div class="rounded-xl border border-dashed border-surface-variant/70 bg-surface-container-lowest/60 p-3.5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary border border-surface-variant/50 flex-shrink-0">
+<span class="material-symbols-outlined text-xl">favorite_border</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline font-bold text-sm text-on-surface">Ajouter des favoris</h4>
+<p class="text-xs text-on-surface-variant font-body">Appuyez longuement sur <span class="text-on-surface font-semibold">OK</span> sur n'importe quelle chaîne pour l'ajouter ou la retirer des favoris.</p>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high text-xs font-semibold text-on-surface border border-white/5">
+<span class="material-symbols-outlined text-sm">format_list_bulleted</span>
+<span>Guide TV</span>
+</div>
+</div>
+<!-- BLOCK 3: RÉCEMMENT REGARDÉS (Horizontal 5 smaller cards) -->
+<div class="flex flex-col">
+<div class="flex items-center justify-between mb-2.5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg">history</span>
+<h3 class="font-headline font-bold text-base text-on-surface">Récemment regardés</h3>
+</div>
+<span class="text-xs text-on-surface-variant">Historique synchronisé</span>
+</div>
+<div class="grid grid-cols-5 gap-3">
+<!-- Wataniya 2 -->
+<div class="bg-surface-container-low rounded-xl p-3 border border-surface-variant/30 flex flex-col justify-between opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex items-center justify-between mb-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center font-display font-bold text-xs text-on-surface">W2</div>
+<span class="text-[10px] text-on-surface-variant font-label">il y a 2 h</span>
+</div>
+<div class="text-xs font-bold text-on-surface truncate">Wataniya 2</div>
+<div class="w-full bg-surface-variant rounded-full h-1 mt-2 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 75%;"></div>
+</div>
+</div>
+<!-- Attessia TV -->
+<div class="bg-surface-container-low rounded-xl p-3 border border-surface-variant/30 flex flex-col justify-between opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex items-center justify-between mb-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center font-display font-bold text-xs text-on-surface">AT9</div>
+<span class="text-[10px] text-on-surface-variant font-label">il y a 3 h</span>
+</div>
+<div class="text-xs font-bold text-on-surface truncate">Attessia TV</div>
+<div class="w-full bg-surface-variant rounded-full h-1 mt-2 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 45%;"></div>
+</div>
+</div>
+<!-- Tunisna TV -->
+<div class="bg-surface-container-low rounded-xl p-3 border border-surface-variant/30 flex flex-col justify-between opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex items-center justify-between mb-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center font-display font-bold text-xs text-on-surface">TN</div>
+<span class="text-[10px] text-on-surface-variant font-label">il y a 5 h</span>
+</div>
+<div class="text-xs font-bold text-on-surface truncate">Tunisna TV</div>
+<div class="w-full bg-surface-variant rounded-full h-1 mt-2 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 90%;"></div>
+</div>
+</div>
+<!-- Carthage+ -->
+<div class="bg-surface-container-low rounded-xl p-3 border border-surface-variant/30 flex flex-col justify-between opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex items-center justify-between mb-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center font-display font-bold text-xs text-on-surface">C+</div>
+<span class="text-[10px] text-on-surface-variant font-label">Hier</span>
+</div>
+<div class="text-xs font-bold text-on-surface truncate">Carthage+</div>
+<div class="w-full bg-surface-variant rounded-full h-1 mt-2 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 30%;"></div>
+</div>
+</div>
+<!-- Mosaïque TV -->
+<div class="bg-surface-container-low rounded-xl p-3 border border-surface-variant/30 flex flex-col justify-between opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex items-center justify-between mb-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center font-display font-bold text-xs text-on-surface">M</div>
+<span class="text-[10px] text-on-surface-variant font-label">Hier</span>
+</div>
+<div class="text-xs font-bold text-on-surface truncate">Mosaïque TV</div>
+<div class="w-full bg-surface-variant rounded-full h-1 mt-2 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 60%;"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================== -->
+<!-- RIGHT SECTION (~38%): DEDICATED TV SETTINGS PANEL -->
+<!-- ========================================================== -->
+<section class="col-span-5 bg-surface-container-low/90 rounded-2xl p-6 border border-surface-variant/40 flex flex-col justify-between h-full shadow-2xl backdrop-blur-sm">
+<div>
+<!-- Settings Panel Header -->
+<div class="flex items-center justify-between pb-4 border-b border-surface-variant/40 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface border border-white/5">
+<span class="material-symbols-outlined text-2xl">tune</span>
+</div>
+<div>
+<h2 class="font-headline font-bold text-lg text-on-surface">Préférences &amp; Système</h2>
+<p class="text-xs text-on-surface-variant">Configuration de lecture et interface</p>
+</div>
+</div>
+<span class="text-[11px] font-mono px-2 py-1 rounded bg-surface-container-highest text-secondary-fixed">D-PAD COMPATIBLE</span>
+</div>
+<!-- Settings Rows (Generous 10-foot TV targets) -->
+<div class="space-y-2.5">
+<!-- Row 1: Langue de diffusion -->
+<div class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container border border-surface-variant/20 hover:border-white/20 transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">translate</span>
+<span class="font-headline font-semibold text-sm text-on-surface">Langue de diffusion</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-semibold text-secondary px-2.5 py-1 rounded-md bg-secondary-container/30 border border-secondary/20">Français / العربية</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">unfold_more</span>
+</div>
+</div>
+<!-- Row 2: Qualité vidéo -->
+<div class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container border border-surface-variant/20 hover:border-white/20 transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">high_quality</span>
+<span class="font-headline font-semibold text-sm text-on-surface">Qualité vidéo</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-semibold text-tertiary px-2.5 py-1 rounded-md bg-tertiary-container/30 border border-tertiary/20">Automatique (1080p)</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
+</div>
+</div>
+<!-- Row 3: Lecture automatique au démarrage -->
+<div class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container border border-surface-variant/20 hover:border-white/20 transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">power_settings_new</span>
+<div>
+<div class="font-headline font-semibold text-sm text-on-surface">Lecture automatique</div>
+<div class="text-[11px] text-on-surface-variant">Lancer le direct au démarrage</div>
+</div>
+</div>
+<!-- Toggle switch ON (Primary Container Red) -->
+<div class="w-12 h-6 rounded-full bg-primary-container p-0.5 flex items-center justify-end shadow-[0_0_10px_rgba(231,0,19,0.5)]">
+<div class="w-5 h-5 rounded-full bg-white shadow-md"></div>
+</div>
+</div>
+<!-- Row 4: Effacer l'historique (WITH DISTINCT SUB-FOCUS / HOVER HIGHLIGHT) -->
+<div class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container-high tv-focus-subtle border border-on-surface/40 transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error text-xl">delete_sweep</span>
+<div>
+<div class="font-headline font-semibold text-sm text-on-surface">Effacer l'historique de lecture</div>
+<div class="text-[11px] text-on-surface-variant">Supprime les chaînes récentes</div>
+</div>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-variant text-xs font-bold text-on-surface hover:bg-error-container hover:text-on-error-container transition-colors">
+<span>Réinitialiser</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Row 5: Mode faible latence -->
+<div class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container border border-surface-variant/20 hover:border-white/20 transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">speed</span>
+<div>
+<div class="font-headline font-semibold text-sm text-on-surface">Mode faible latence</div>
+<div class="text-[11px] text-on-surface-variant">Optimisation synchro Direct TV</div>
+</div>
+</div>
+<!-- Toggle switch ON -->
+<div class="w-12 h-6 rounded-full bg-primary-container p-0.5 flex items-center justify-end shadow-[0_0_10px_rgba(231,0,19,0.5)]">
+<div class="w-5 h-5 rounded-full bg-white shadow-md"></div>
+</div>
+</div>
+<!-- Row 6: À propos -->
+<div class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container border border-surface-variant/20 hover:border-white/20 transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">info</span>
+<span class="font-headline font-semibold text-sm text-on-surface">À propos de l'application</span>
+</div>
+<div class="text-xs font-mono text-on-surface-variant bg-surface-container-highest px-2.5 py-1 rounded">
+                TunisieTV v1.0.0 (Build 412)
+              </div>
+</div>
+</div>
+</div>
+<!-- TV Security / Account Footer Card in Settings -->
+<div class="mt-4 pt-4 border-t border-surface-variant/30 flex items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span>Compte connecté : <strong>famille.salon@tunisie.tv</strong></span>
+</div>
+<span class="text-[11px] text-secondary">Abonnement Premium Actif</span>
+</div>
+</section>
+</div>
+<!-- ========================================================== -->
+<!-- BOTTOM OSD HINT BAR (PINNED 10-FOOT TV REMOTE CONTROLS)    -->
+<!-- ========================================================== -->
+<footer class="h-12 -mx-12 px-12 bg-surface-container-lowest/95 border-t border-surface-variant/40 flex items-center justify-between z-40">
+<!-- Remote Keys Clusters -->
+<div class="flex items-center gap-8">
+<!-- OK Key -->
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-md bg-white text-surface-container-lowest font-headline font-black text-xs flex items-center justify-center shadow">OK</span>
+<span class="text-xs font-label text-on-surface font-medium">Sélectionner / Regarder</span>
+</div>
+<!-- D-Pad Arrows -->
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-0.5 px-2 py-0.5 rounded-md bg-surface-variant text-on-surface font-mono text-xs">
+<span>▲</span><span>▼</span><span>◀</span><span>▶</span>
+</div>
+<span class="text-xs font-label text-on-surface-variant">Naviguer</span>
+</div>
+<!-- Info Key -->
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-md bg-surface-variant text-on-surface font-headline font-bold text-xs">INFO</span>
+<span class="text-xs font-label text-on-surface-variant">Détails chaîne</span>
+</div>
+<!-- Favorite Key -->
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-md bg-primary-container text-on-primary-container font-headline font-bold text-xs">FAV</span>
+<span class="text-xs font-label text-on-surface-variant">Retirer des favoris</span>
+</div>
+<!-- Return / Back Key -->
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-md bg-surface-variant text-on-surface font-headline font-bold text-xs">RETOUR</span>
+<span class="text-xs font-label text-on-surface-variant">Accueil</span>
+</div>
+</div>
+<!-- TV Resolution / Build indicator -->
+<div class="flex items-center gap-3 text-xs text-on-surface-variant/70 font-mono">
+<span class="inline-block w-2 h-2 rounded-full bg-primary-container"></span>
+<span>TunisieTV v1.0.0 • 1080p D-Pad Ready</span>
+</div>
+</footer>
+</main>
+<!-- TV micro-interaction script for D-Pad keyboard exploration -->
+<script>
+    document.addEventListener('keydown', (e) => {
+      // Audio or visual cue for 10-foot interaction feel
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.key)) {
+        // Keeps TV navigation smooth
+      }
+    });
+  </script>
+</body></html>

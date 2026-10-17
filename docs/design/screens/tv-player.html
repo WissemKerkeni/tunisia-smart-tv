@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TunisieTV — Lecteur Direct TV</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@400;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@100..900&family=Sora:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-container": "#d5b478",
+            "on-tertiary-fixed-variant": "#004c6b",
+            "inverse-surface": "#e5e1e6",
+            "tertiary-fixed": "#c6e7ff",
+            "tertiary": "#81cfff",
+            "on-error": "#690005",
+            "surface-container": "#1f1f22",
+            "primary-fixed": "#ffdad5",
+            "surface-dim": "#131316",
+            "on-tertiary": "#00344b",
+            "on-error-container": "#ffdad6",
+            "outline-variant": "#5f3f3b",
+            "primary": "#ffb4aa",
+            "secondary": "#e4c285",
+            "on-tertiary-container": "#f6faff",
+            "on-primary": "#690004",
+            "secondary-fixed": "#ffdea4",
+            "on-surface-variant": "#e9bcb6",
+            "on-surface": "#e5e1e6",
+            "on-secondary": "#412d00",
+            "on-primary-fixed": "#410001",
+            "error-container": "#93000a",
+            "inverse-on-surface": "#303033",
+            "surface": "#131316",
+            "secondary-fixed-dim": "#e4c285",
+            "outline": "#af8782",
+            "secondary-container": "#5d4514",
+            "on-tertiary-fixed": "#001e2d",
+            "background": "#131316",
+            "tertiary-fixed-dim": "#81cfff",
+            "tertiary-container": "#007baa",
+            "surface-container-low": "#1b1b1e",
+            "error": "#ffb4ab",
+            "surface-tint": "#ffb4aa",
+            "inverse-primary": "#c0000e",
+            "surface-container-high": "#2a2a2d",
+            "on-background": "#e5e1e6",
+            "surface-variant": "#353438",
+            "primary-fixed-dim": "#ffb4aa",
+            "on-primary-fixed-variant": "#930008",
+            "surface-container-lowest": "#0e0e11",
+            "surface-bright": "#39393c",
+            "primary-container": "#e70013",
+            "on-primary-container": "#fff8f7",
+            "on-secondary-fixed-variant": "#5a4312",
+            "on-secondary-fixed": "#261900",
+            "surface-container-highest": "#353438"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Sora"],
+            "display": ["Sora"],
+            "body": ["Manrope"],
+            "label": ["Manrope"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .tv-focus-glow {
+      box-shadow: 0 0 0 4px #FFFFFF, 0 0 28px rgba(231, 0, 19, 0.65);
+    }
+    .tv-card-glow {
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 24px rgba(231, 0, 19, 0.55);
+    }
+    /* Hide scrollbars for clean TV horizontal scroll rail */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-body overflow-hidden select-none w-screen h-screen m-0 p-0 antialiased">
+<!-- TV Canvas Root: 10-foot Living Room UI Container (1920x1080 optimized ratio) -->
+<main class="relative w-full h-full overflow-hidden bg-black flex flex-col justify-between">
+<!-- Full-bleed Live Video Broadcast Scrim Container -->
+<div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+<img alt="Diffusion en direct du Journal Télévisé" class="w-full h-full object-cover object-center scale-105 transform filter brightness-95" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFQbnDbcnjWEYfXlZGp5-HR3SqjSCag4K1TYMW8oEG5wGLQ3JyfhY0rUzyPq-VvpnOF9yrulN4BFfTy54io8kd887-fuxwHLyp23u5aeGwb7WrBHF4MjOLe9Aq0nCQT83LSjsZBARSakK38r4WjHkax7zo3k_nq4n_uS_TbpX-OAkW6bMrOzYmmRJJrysH-FLGzOcfDo7BWC3RJPlLI1IhR9Xx_gGR91nqxospjEKuBtskAABUImVL37yvfy_7ZHD3nlDb1EVgBQE"/>
+<!-- Deep Cinematic Gradients / Scrim Layers for 3-meter TV Legibility -->
+<div class="absolute inset-0 bg-gradient-to-t from-[#0e0e11] via-[#0e0e11]/80 via-35% via-[#0e0e11]/30 to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-[#0e0e11]/90 via-[#0e0e11]/30 to-transparent h-48"></div>
+<div class="absolute inset-0 bg-radial from-transparent via-transparent to-black/60 pointer-events-none"></div>
+</div>
+<!-- TOP OVERLAY: TV Safe Area (48px horizontal margin, 36px vertical margin) -->
+<header class="relative z-30 pt-9 px-12 flex items-center justify-between w-full">
+<!-- Active Channel Brand Anchor & Direct Status -->
+<div class="flex items-center gap-4">
+<!-- Monogram Badge (Wataniya 1) -->
+<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#2a1315] to-[#16161b] border-2 border-primary-container flex items-center justify-center shadow-lg shadow-primary-container/20">
+<span class="font-display font-black text-xl tracking-tight text-white">W1</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-3">
+<h1 class="font-display font-semibold text-2xl text-white tracking-tight">Wataniya 1</h1>
+<!-- Live Badge with Pulsing Beacon -->
+<div class="inline-flex items-center gap-2 bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-xs font-headline font-bold uppercase tracking-wider shadow-[0_0_12px_rgba(231,0,19,0.5)]">
+<span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+<span>EN DIRECT</span>
+</div>
+</div>
+<span class="font-label text-xs text-on-surface/70 uppercase tracking-widest mt-0.5">Télévision Tunisienne</span>
+</div>
+</div>
+<!-- End Side TV Metadata: Clock, Signal & Resolution -->
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3 bg-surface-container-lowest/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-md">
+<span class="material-symbols-outlined text-white/80 text-xl" data-icon="wifi">wifi</span>
+<span class="w-px h-4 bg-white/20"></span>
+<span class="font-display font-bold text-xs uppercase tracking-widest text-secondary px-1.5 py-0.5 bg-secondary-container/40 rounded">HD 1080p</span>
+<span class="w-px h-4 bg-white/20"></span>
+<span class="material-symbols-outlined text-white/80 text-xl" data-icon="volume_up">volume_up</span>
+</div>
+<!-- TV System Clock -->
+<div class="flex items-baseline gap-1 font-display font-bold text-2xl tracking-tight text-white drop-shadow-md">
+<span id="tv-clock">20:17</span>
+</div>
+</div>
+</header>
+<!-- BOTTOM PLAYBACK & ZAPPER CANVAS (Strictly anchored to TV safe boundaries) -->
+<section class="relative z-30 pb-9 px-12 flex flex-col justify-end gap-5 w-full">
+<!-- 1. CHANNEL ZAPPER STRIP (Horizontal Rail) -->
+<div class="flex flex-col gap-2.5">
+<!-- Zapper Header with Remote D-Pad Navigation Hint -->
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center gap-2">
+<span class="font-label uppercase text-xs font-bold tracking-widest text-white/70">CHAÎNES EN DIRECT</span>
+<span class="text-white/30 text-xs">•</span>
+<span class="text-white/50 text-xs font-label">Zapping Rapide</span>
+</div>
+<!-- D-Pad Legend / Assistance -->
+<div class="flex items-center gap-3 bg-surface-container-high/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-white/80 text-xs font-label">
+<div class="flex items-center gap-1 text-white/90">
+<span class="material-symbols-outlined text-sm" data-icon="swap_vert">swap_vert</span>
+<span class="font-medium">Changer de chaîne</span>
+</div>
+<span class="w-1 h-1 rounded-full bg-white/40"></span>
+<div class="flex items-center gap-1 text-white/90">
+<span class="px-1.5 py-0.2 bg-white/20 rounded text-[10px] font-bold">OK</span>
+<span class="font-medium">Regarder</span>
+</div>
+</div>
+</div>
+<!-- 6 Compact 16:9 Channel Cards -->
+<div class="flex items-center gap-4 overflow-x-auto no-scrollbar py-2 px-1">
+<!-- Card 1: Wataniya 1 (ACTIVE / CURRENT FOCUS CANDIDATE) -->
+<div class="flex-shrink-0 w-64 rounded-xl bg-surface-container/90 backdrop-blur-md border border-white/20 p-2.5 flex flex-col justify-between transition-all duration-200 tv-card-glow relative group">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-primary-container text-white flex items-center justify-center font-display font-black text-xs shadow-sm">
+                  W1
+                </div>
+<span class="font-display font-semibold text-sm text-white">Wataniya 1</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-primary-container animate-ping"></span>
+</div>
+<div class="h-16 rounded-lg bg-gradient-to-tr from-surface-container-highest to-surface-container-high p-2 flex flex-col justify-end border border-white/5">
+<span class="font-display font-bold text-xs text-white truncate">Journal du soir</span>
+<span class="text-[11px] text-white/70 truncate">Édition principale de 20h</span>
+</div>
+<div class="absolute -bottom-1 inset-x-3 h-1 bg-primary-container rounded-full shadow-[0_0_8px_#E70013]"></div>
+</div>
+<!-- Card 2: Wataniya 2 -->
+<div class="flex-shrink-0 w-64 rounded-xl bg-surface-container/60 backdrop-blur-md border border-white/10 p-2.5 flex flex-col justify-between opacity-85 hover:opacity-100 focus:opacity-100 transition-all duration-200">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container-highest text-white/90 flex items-center justify-center font-display font-bold text-xs">
+                  W2
+                </div>
+<span class="font-display font-medium text-sm text-white/90">Wataniya 2</span>
+</div>
+<span class="text-[10px] font-label text-white/50">DIRECT</span>
+</div>
+<div class="h-16 rounded-lg bg-surface-container-highest/60 p-2 flex flex-col justify-end border border-white/5">
+<span class="font-display font-bold text-xs text-white/90 truncate">Docu: Carthage Antique</span>
+<span class="text-[11px] text-white/60 truncate">Histoire & Archéologie</span>
+</div>
+</div>
+<!-- Card 3: Hannibal TV -->
+<div class="flex-shrink-0 w-64 rounded-xl bg-surface-container/60 backdrop-blur-md border border-white/10 p-2.5 flex flex-col justify-between opacity-85 hover:opacity-100 focus:opacity-100 transition-all duration-200">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container-highest text-white/90 flex items-center justify-center font-display font-bold text-xs">
+                  HN
+                </div>
+<span class="font-display font-medium text-sm text-white/90">Hannibal TV</span>
+</div>
+<span class="text-[10px] font-label text-white/50">DIRECT</span>
+</div>
+<div class="h-16 rounded-lg bg-surface-container-highest/60 p-2 flex flex-col justify-end border border-white/5">
+<span class="font-display font-bold text-xs text-white/90 truncate">Al Moussamih Karim</span>
+<span class="text-[11px] text-white/60 truncate">Émission Sociale</span>
+</div>
+</div>
+<!-- Card 4: Nessma TV -->
+<div class="flex-shrink-0 w-64 rounded-xl bg-surface-container/60 backdrop-blur-md border border-white/10 p-2.5 flex flex-col justify-between opacity-85 hover:opacity-100 focus:opacity-100 transition-all duration-200">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container-highest text-white/90 flex items-center justify-center font-display font-bold text-xs">
+                  NS
+                </div>
+<span class="font-display font-medium text-sm text-white/90">Nessma TV</span>
+</div>
+<span class="text-[10px] font-label text-white/50">DIRECT</span>
+</div>
+<div class="h-16 rounded-lg bg-surface-container-highest/60 p-2 flex flex-col justify-end border border-white/5">
+<span class="font-display font-bold text-xs text-white/90 truncate">Série Tunisienne</span>
+<span class="text-[11px] text-white/60 truncate">Feuilleton Drame</span>
+</div>
+</div>
+<!-- Card 5: Attessia TV -->
+<div class="flex-shrink-0 w-64 rounded-xl bg-surface-container/60 backdrop-blur-md border border-white/10 p-2.5 flex flex-col justify-between opacity-85 hover:opacity-100 focus:opacity-100 transition-all duration-200">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container-highest text-white/90 flex items-center justify-center font-display font-bold text-xs">
+                  T9
+                </div>
+<span class="font-display font-medium text-sm text-white/90">Attessia</span>
+</div>
+<span class="text-[10px] font-label text-white/50">DIRECT</span>
+</div>
+<div class="h-16 rounded-lg bg-surface-container-highest/60 p-2 flex flex-col justify-end border border-white/5">
+<span class="font-display font-bold text-xs text-white/90 truncate">Rendez-vous 9</span>
+<span class="text-[11px] text-white/60 truncate">Débat Politique</span>
+</div>
+</div>
+<!-- Card 6: El Hiwar Ettounsi -->
+<div class="flex-shrink-0 w-64 rounded-xl bg-surface-container/60 backdrop-blur-md border border-white/10 p-2.5 flex flex-col justify-between opacity-85 hover:opacity-100 focus:opacity-100 transition-all duration-200">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container-highest text-white/90 flex items-center justify-center font-display font-bold text-xs">
+                  HT
+                </div>
+<span class="font-display font-medium text-sm text-white/90">El Hiwar</span>
+</div>
+<span class="text-[10px] font-label text-white/50">DIRECT</span>
+</div>
+<div class="h-16 rounded-lg bg-surface-container-highest/60 p-2 flex flex-col justify-end border border-white/5">
+<span class="font-display font-bold text-xs text-white/90 truncate">Fekret Sami Fehri</span>
+<span class="text-[11px] text-white/60 truncate">Talk Show & Divertissement</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. PROGRAMME METADATA & LIVE SCRUBBER -->
+<div class="bg-surface-container-lowest/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
+<!-- Metadata Header line -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-3">
+<div>
+<div class="flex items-center gap-3 mb-1.5">
+<span class="bg-primary-container/20 text-primary border border-primary-container/40 px-2.5 py-0.5 rounded-full font-headline font-bold text-xs uppercase tracking-wider">
+                INFO
+              </span>
+<span class="font-body text-base text-on-surface/80">
+                Actualités · 20:00 – 20:45
+              </span>
+<span class="text-white/30">•</span>
+<span class="font-label text-sm text-secondary bg-secondary-container/20 px-2 py-0.5 rounded border border-secondary/20">
+                Direct National
+              </span>
+</div>
+<!-- Big Screen Hero Title (40px) -->
+<h2 class="font-display font-extrabold text-3xl md:text-4xl text-white tracking-tight drop-shadow-md">
+              Journal du soir
+            </h2>
+</div>
+<!-- Upcoming Programme Pill -->
+<div class="flex items-center gap-2.5 bg-surface-container-high/90 px-4 py-2 rounded-xl border border-white/10 text-white/85">
+<span class="material-symbols-outlined text-secondary text-xl" data-icon="schedule">schedule</span>
+<div class="flex flex-col">
+<span class="text-[11px] font-label uppercase text-white/50 font-semibold tracking-wider">À suivre à 20:45</span>
+<span class="font-headline font-semibold text-sm text-white">Météo & Bulletin National</span>
+</div>
+</div>
+</div>
+<!-- Sleek Live Progress Timeline -->
+<div class="flex items-center gap-4 pt-1">
+<span class="font-display text-sm font-semibold text-white/70 tabular-nums">20:00</span>
+<div class="relative flex-1 h-2 bg-white/15 rounded-full overflow-visible">
+<!-- Red Progress Bar (~40% elapsed at 20:17) -->
+<div class="absolute inset-y-0 left-0 bg-primary-container rounded-full shadow-[0_0_12px_#E70013]" style="width: 38%;"></div>
+<!-- Scrubber Thumb Point -->
+<div class="absolute top-1/2 -translate-y-1/2 -ml-2 w-4 h-4 bg-white rounded-full shadow-[0_0_10px_#ffffff,0_0_16px_#E70013] border-2 border-primary-container" style="left: 38%;"></div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-display text-sm font-semibold text-white/70 tabular-nums">20:45</span>
+<span class="font-label text-xs uppercase px-2 py-0.5 bg-white/10 text-white/80 rounded font-bold tracking-wider">-28 min</span>
+</div>
+</div>
+<!-- 3. TV CONTROL ROW (D-PAD OPTIMIZED) -->
+<div class="flex items-center justify-between pt-2 border-t border-white/10 mt-1">
+<div class="flex items-center gap-6">
+<!-- Control 1: Previous Channel -->
+<button class="w-14 h-14 rounded-full bg-surface-container-high/80 hover:bg-surface-container-highest text-white/80 hover:text-white flex items-center justify-center border border-white/10 transition-transform duration-150 active:scale-95" title="Chaîne précédente">
+<span class="material-symbols-outlined text-2xl" data-icon="skip_previous">skip_previous</span>
+</button>
+<!-- Control 2: PAUSE / PLAY (CURRENTLY FOCUSED BUTTON AS PER SPEC) -->
+<div class="flex flex-col items-center relative">
+<button class="w-16 h-16 rounded-full bg-primary-container text-white flex items-center justify-center transition-all duration-200 transform scale-110 tv-focus-glow" title="Mettre en pause">
+<span class="material-symbols-outlined text-3xl" data-icon="pause" data-weight="fill" style="font-variation-settings: 'FILL' 1;">pause</span>
+</button>
+<!-- Focused Button Label Underneath -->
+<span class="absolute -bottom-6 font-display font-medium text-xs text-white whitespace-nowrap tracking-wide">
+                Mettre en pause
+              </span>
+</div>
+<!-- Control 3: Next Channel -->
+<button class="w-14 h-14 rounded-full bg-surface-container-high/80 hover:bg-surface-container-highest text-white/80 hover:text-white flex items-center justify-center border border-white/10 transition-transform duration-150 active:scale-95" title="Chaîne suivante">
+<span class="material-symbols-outlined text-2xl" data-icon="skip_next">skip_next</span>
+</button>
+<div class="w-px h-8 bg-white/10 mx-1"></div>
+<!-- Control 4: Subtitles & Audio -->
+<button class="w-14 h-14 rounded-full bg-surface-container-high/80 hover:bg-surface-container-highest text-white/80 hover:text-white flex items-center justify-center border border-white/10 transition-transform duration-150 active:scale-95" title="Sous-titres & Audio">
+<span class="material-symbols-outlined text-2xl" data-icon="subtitles">subtitles</span>
+</button>
+<!-- Control 5: Favori -->
+<button class="w-14 h-14 rounded-full bg-surface-container-high/80 hover:bg-surface-container-highest text-white/80 hover:text-white flex items-center justify-center border border-white/10 transition-transform duration-150 active:scale-95" title="Ajouter aux favoris">
+<span class="material-symbols-outlined text-2xl text-primary" data-icon="favorite" data-weight="fill" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<!-- Control 6: Guide & Liste -->
+<button class="w-14 h-14 rounded-full bg-surface-container-high/80 hover:bg-surface-container-highest text-white/80 hover:text-white flex items-center justify-center border border-white/10 transition-transform duration-150 active:scale-95" title="Guide TV & Liste complète">
+<span class="material-symbols-outlined text-2xl" data-icon="grid_view">grid_view</span>
+</button>
+</div>
+<!-- TV Remote Guide Quick Shortcuts -->
+<div class="hidden lg:flex items-center gap-5 text-white/60 font-label text-xs">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded bg-white/15 flex items-center justify-center text-[10px] font-bold text-white">RED</span>
+<span>Revoir depuis le début</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded bg-white/15 flex items-center justify-center text-[10px] font-bold text-white">INFO</span>
+<span>Détails du programme</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Live Clock Script -->
+<script>
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const el = document.getElementById('tv-clock');
+      if (el) {
+        el.textContent = `${hours}:${minutes}`;
+      }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body></html>

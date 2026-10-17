@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TunisieTV — Favoris &amp; Paramètres Mobile</title>
+  
+  <!-- Google Fonts: Sora & Manrope -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-lowest": "#0e0e11",
+            "surface-container-low": "#18181c",
+            "surface-container": "#1f1f24",
+            "surface-container-high": "#28282d",
+            "surface-container-highest": "#34343a",
+            "background": "#131316",
+            "surface": "#131316",
+            "on-surface": "#e5e1e6",
+            "on-surface-variant": "#a29fa5",
+            "outline-variant": "#2f2e34",
+            "primary-container": "#e70013",
+            "on-primary-container": "#ffffff",
+            "warning": "#e4c285",
+            "warning-container": "#3d2e11"
+          },
+          borderRadius: {
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.25rem"
+          },
+          fontFamily: {
+            "headline": ["Sora", "sans-serif"],
+            "display": ["Sora", "sans-serif"],
+            "body": ["Manrope", "sans-serif"],
+            "label": ["Manrope", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-1 {
+      font-variation-settings: 'FILL' 1;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+
+<body class="bg-surface-container-lowest text-on-surface font-body antialiased flex justify-center min-h-screen">
+
+  <!-- Mobile Frame Container (Max 390px, Android 14 / One UI form factor) -->
+  <main class="w-full max-w-[390px] bg-background min-h-screen flex flex-col relative pb-24 shadow-2xl border-x border-white/5">
+    
+    <!-- 1. Android Status Bar -->
+    <header class="w-full pt-3 px-5 flex justify-between items-center text-xs font-label text-on-surface-variant select-none tracking-tight z-50">
+      <span class="font-headline font-semibold text-on-surface tracking-normal text-sm">20:14</span>
+      <div class="flex items-center gap-1.5 opacity-90">
+        <span class="text-[11px] font-bold tracking-wider mr-0.5">5G</span>
+        <span class="material-symbols-outlined text-[17px]">network_cell</span>
+        <span class="material-symbols-outlined text-[17px]">wifi</span>
+        <span class="material-symbols-outlined text-[19px]">battery_full</span>
+      </div>
+    </header>
+
+    <!-- 2. Sticky Top App Bar -->
+    <section class="flex items-center justify-between px-4 h-14 w-full bg-surface/95 backdrop-blur-md sticky top-0 z-40 border-b border-white/5">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-surface-container-high border border-white/10 flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary-container fill-1 text-lg">favorite</span>
+        </div>
+        <div>
+          <h1 class="font-headline text-lg font-bold tracking-tight text-on-surface leading-tight">Mes favoris</h1>
+          <p class="font-label text-[10px] text-on-surface-variant tracking-wide -mt-0.5">قنواتي المفضلة</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-headline font-semibold bg-surface-container-high text-on-surface-variant border border-white/5">
+          4 chaînes
+        </span>
+        <button aria-label="Recherche" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60 active:scale-95 transition-all">
+          <span class="material-symbols-outlined text-[20px]">search</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. Amber Offline Banner -->
+    <div class="px-4 pt-3 pb-1">
+      <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-warning/30 shadow-inner">
+        <span class="material-symbols-outlined text-warning text-[20px] shrink-0">wifi_off</span>
+        <p class="text-xs text-warning/90 leading-snug">
+          <span class="font-semibold text-warning">Hors ligne</span> — certaines chaînes sont indisponibles.
+        </p>
+      </div>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="px-4 flex flex-col gap-6 pt-3">
+
+      <!-- 4. Section: Chaînes favorites (2-Column Bento Grid) -->
+      <section aria-labelledby="heading-favoris">
+        <div class="flex justify-between items-baseline mb-3">
+          <h2 id="heading-favoris" class="font-headline text-[15px] font-bold text-on-surface tracking-tight flex items-center gap-1.5">
+            Chaînes favorites
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+          </h2>
+          <button class="text-xs font-headline font-medium text-primary-container hover:underline tracking-tight">
+            Modifier
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+
+          <!-- Card 1: Wataniya 1 (W1) -->
+          <article class="relative flex flex-col justify-between p-3.5 rounded-2xl bg-surface-container-low border border-white/5 hover:border-white/10 active:scale-[0.98] transition-all overflow-hidden group shadow-md">
+            <div class="flex justify-between items-start mb-3">
+              <!-- Typographic Monogram Badge -->
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-surface-container-high to-surface-container flex items-center justify-center border border-primary-container/30 shadow-sm">
+                <span class="font-headline font-extrabold text-sm tracking-tight text-on-surface">W1</span>
+              </div>
+              
+              <!-- Red Filled Heart Toggle -->
+              <button aria-label="Retirer des favoris" class="w-8 h-8 rounded-full flex items-center justify-center text-primary-container hover:bg-surface-container-high transition-colors">
+                <span class="material-symbols-outlined fill-1 text-[20px]">favorite</span>
+              </button>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+                <span class="text-[10px] font-headline font-bold text-primary-container uppercase tracking-wider">EN DIRECT</span>
+              </div>
+              <h3 class="font-headline font-bold text-sm text-on-surface leading-snug truncate">Wataniya 1</h3>
+              <p class="text-xs text-on-surface-variant truncate mt-0.5">Journal de 20h</p>
+
+              <!-- Progress bar -->
+              <div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden mt-2.5">
+                <div class="bg-primary-container h-full rounded-full" style="width: 65%;"></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2: El Hiwar Ettounsi (EH) -->
+          <article class="relative flex flex-col justify-between p-3.5 rounded-2xl bg-surface-container-low border border-white/5 hover:border-white/10 active:scale-[0.98] transition-all overflow-hidden group shadow-md">
+            <div class="flex justify-between items-start mb-3">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-surface-container-high to-surface-container flex items-center justify-center border border-white/10 shadow-sm">
+                <span class="font-headline font-extrabold text-sm tracking-tight text-on-surface">EH</span>
+              </div>
+              
+              <button aria-label="Retirer des favoris" class="w-8 h-8 rounded-full flex items-center justify-center text-primary-container hover:bg-surface-container-high transition-colors">
+                <span class="material-symbols-outlined fill-1 text-[20px]">favorite</span>
+              </button>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+                <span class="text-[10px] font-headline font-bold text-primary-container uppercase tracking-wider">EN DIRECT</span>
+              </div>
+              <h3 class="font-headline font-bold text-sm text-on-surface leading-snug truncate">El Hiwar</h3>
+              <p class="text-xs text-on-surface-variant truncate mt-0.5">Fekret Sami Fehri</p>
+
+              <!-- Progress bar -->
+              <div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden mt-2.5">
+                <div class="bg-primary-container h-full rounded-full" style="width: 45%;"></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3: Nessma El Jadida (NS) -->
+          <article class="relative flex flex-col justify-between p-3.5 rounded-2xl bg-surface-container-low border border-white/5 hover:border-white/10 active:scale-[0.98] transition-all overflow-hidden group shadow-md">
+            <div class="flex justify-between items-start mb-3">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-surface-container-high to-surface-container flex items-center justify-center border border-white/10 shadow-sm">
+                <span class="font-headline font-extrabold text-sm tracking-tight text-on-surface">NS</span>
+              </div>
+              
+              <button aria-label="Retirer des favoris" class="w-8 h-8 rounded-full flex items-center justify-center text-primary-container hover:bg-surface-container-high transition-colors">
+                <span class="material-symbols-outlined fill-1 text-[20px]">favorite</span>
+              </button>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+                <span class="text-[10px] font-headline font-bold text-primary-container uppercase tracking-wider">EN DIRECT</span>
+              </div>
+              <h3 class="font-headline font-bold text-sm text-on-surface leading-snug truncate">Nessma TV</h3>
+              <p class="text-xs text-on-surface-variant truncate mt-0.5">Feuilleton Khalil</p>
+
+              <!-- Progress bar -->
+              <div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden mt-2.5">
+                <div class="bg-primary-container h-full rounded-full" style="width: 80%;"></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 4: Hannibal TV (HTV) -->
+          <article class="relative flex flex-col justify-between p-3.5 rounded-2xl bg-surface-container-low border border-white/5 hover:border-white/10 active:scale-[0.98] transition-all overflow-hidden group shadow-md">
+            <div class="flex justify-between items-start mb-3">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-surface-container-high to-surface-container flex items-center justify-center border border-white/10 shadow-sm">
+                <span class="font-headline font-extrabold text-xs tracking-tight text-on-surface">HTV</span>
+              </div>
+              
+              <button aria-label="Retirer des favoris" class="w-8 h-8 rounded-full flex items-center justify-center text-primary-container hover:bg-surface-container-high transition-colors">
+                <span class="material-symbols-outlined fill-1 text-[20px]">favorite</span>
+              </button>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+                <span class="text-[10px] font-headline font-bold text-primary-container uppercase tracking-wider">EN DIRECT</span>
+              </div>
+              <h3 class="font-headline font-bold text-sm text-on-surface leading-snug truncate">Hannibal TV</h3>
+              <p class="text-xs text-on-surface-variant truncate mt-0.5">Al Mousameh Karim</p>
+
+              <!-- Progress bar -->
+              <div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden mt-2.5">
+                <div class="bg-primary-container h-full rounded-full" style="width: 30%;"></div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- 5. Section: Récemment regardés (Horizontal Monogram Strip) -->
+      <section aria-labelledby="heading-recents">
+        <div class="flex justify-between items-baseline mb-3">
+          <h2 id="heading-recents" class="font-headline text-[15px] font-bold text-on-surface tracking-tight flex items-center gap-1.5">
+            Récemment regardés
+          </h2>
+          <span class="text-xs text-on-surface-variant">4 chaînes</span>
+        </div>
+
+        <div class="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
+          
+          <!-- Recent 1: W2 -->
+          <div class="flex-shrink-0 flex items-center gap-3 p-2.5 pr-4 rounded-xl bg-surface-container-low border border-white/5 min-w-[145px] hover:bg-surface-container transition-colors">
+            <div class="w-10 h-10 rounded-lg bg-surface-container-high border border-white/10 flex items-center justify-center flex-shrink-0">
+              <span class="font-headline font-bold text-xs text-on-surface">W2</span>
+            </div>
+            <div class="overflow-hidden">
+              <p class="font-headline font-semibold text-xs text-on-surface truncate">Wataniya 2</p>
+              <p class="text-[11px] text-on-surface-variant truncate mt-0.5">il y a 2 h</p>
+            </div>
+          </div>
+
+          <!-- Recent 2: AT9 -->
+          <div class="flex-shrink-0 flex items-center gap-3 p-2.5 pr-4 rounded-xl bg-surface-container-low border border-white/5 min-w-[145px] hover:bg-surface-container transition-colors">
+            <div class="w-10 h-10 rounded-lg bg-surface-container-high border border-white/10 flex items-center justify-center flex-shrink-0">
+              <span class="font-headline font-bold text-xs text-on-surface">AT9</span>
+            </div>
+            <div class="overflow-hidden">
+              <p class="font-headline font-semibold text-xs text-on-surface truncate">Attessia TV</p>
+              <p class="text-[11px] text-on-surface-variant truncate mt-0.5">il y a 3 h</p>
+            </div>
+          </div>
+
+          <!-- Recent 3: TN -->
+          <div class="flex-shrink-0 flex items-center gap-3 p-2.5 pr-4 rounded-xl bg-surface-container-low border border-white/5 min-w-[145px] hover:bg-surface-container transition-colors">
+            <div class="w-10 h-10 rounded-lg bg-surface-container-high border border-white/10 flex items-center justify-center flex-shrink-0">
+              <span class="font-headline font-bold text-xs text-on-surface">TN</span>
+            </div>
+            <div class="overflow-hidden">
+              <p class="font-headline font-semibold text-xs text-on-surface truncate">Tunisna TV</p>
+              <p class="text-[11px] text-on-surface-variant truncate mt-0.5">il y a 5 h</p>
+            </div>
+          </div>
+
+          <!-- Recent 4: C+ -->
+          <div class="flex-shrink-0 flex items-center gap-3 p-2.5 pr-4 rounded-xl bg-surface-container-low border border-white/5 min-w-[135px] hover:bg-surface-container transition-colors">
+            <div class="w-10 h-10 rounded-lg bg-surface-container-high border border-white/10 flex items-center justify-center flex-shrink-0">
+              <span class="font-headline font-bold text-xs text-on-surface">C+</span>
+            </div>
+            <div class="overflow-hidden">
+              <p class="font-headline font-semibold text-xs text-on-surface truncate">Carthage+</p>
+              <p class="text-[11px] text-on-surface-variant truncate mt-0.5">Hier</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 6. Section: Paramètres de l'application (Grouped List 56dp rows) -->
+      <section aria-labelledby="heading-settings" class="pb-4">
+        <h2 id="heading-settings" class="font-headline text-[15px] font-bold text-on-surface tracking-tight mb-3">
+          Paramètres
+        </h2>
+
+        <div class="rounded-2xl bg-surface-container-low border border-white/5 divide-y divide-white/5 overflow-hidden shadow-md">
+          
+          <!-- Row 1: Langue de diffusion -->
+          <div class="flex items-center justify-between px-4 h-14 hover:bg-surface-container/60 active:bg-surface-container transition-colors cursor-pointer">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-on-surface-variant text-[22px]">translate</span>
+              <span class="font-body text-sm font-medium text-on-surface">Langue de diffusion</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-on-surface-variant">
+              <span class="text-xs font-medium text-on-surface">Français <span class="text-on-surface-variant/80 font-normal">/ العربية</span></span>
+              <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+            </div>
+          </div>
+
+          <!-- Row 2: Qualité vidéo -->
+          <div class="flex items-center justify-between px-4 h-14 hover:bg-surface-container/60 active:bg-surface-container transition-colors cursor-pointer">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-on-surface-variant text-[22px]">hd</span>
+              <span class="font-body text-sm font-medium text-on-surface">Qualité vidéo</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-on-surface-variant">
+              <span class="text-xs font-medium text-on-surface">Automatique (1080p)</span>
+              <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+            </div>
+          </div>
+
+          <!-- Row 3: Lecture automatique (Switch ON) -->
+          <div class="flex items-center justify-between px-4 h-14">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-on-surface-variant text-[22px]">play_circle</span>
+              <div>
+                <p class="font-body text-sm font-medium text-on-surface leading-tight">Lecture automatique</p>
+                <p class="text-[11px] text-on-surface-variant">Lancer le direct au démarrage</p>
+              </div>
+            </div>
+            <!-- Switch toggled ON with Tunisia red accent -->
+            <button aria-label="Activer lecture automatique" class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary-container transition-colors focus:outline-none">
+              <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6 shadow-sm"></span>
+            </button>
+          </div>
+
+          <!-- Row 4: Effacer l'historique (Red Text Action) -->
+          <div class="flex items-center justify-between px-4 h-14 hover:bg-surface-container/60 active:bg-surface-container transition-colors cursor-pointer">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary-container text-[22px]">delete_outline</span>
+              <div>
+                <p class="font-body text-sm font-medium text-primary-container leading-tight">Effacer l'historique de lecture</p>
+                <p class="text-[11px] text-on-surface-variant">Supprime les chaînes récentes</p>
+              </div>
+            </div>
+            <button class="text-xs font-headline font-semibold text-primary-container px-2.5 py-1 rounded-lg bg-primary-container/10 border border-primary-container/20">
+              Réinitialiser
+            </button>
+          </div>
+
+          <!-- Row 5: À propos de l'application -->
+          <div class="flex items-center justify-between px-4 h-14 hover:bg-surface-container/60 active:bg-surface-container transition-colors cursor-pointer">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-on-surface-variant text-[22px]">info</span>
+              <span class="font-body text-sm font-medium text-on-surface">À propos de l'application</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-on-surface-variant">
+              <span class="text-xs font-label text-on-surface-variant font-mono">v1.0.0 (Build 412)</span>
+              <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 7. Fixed Bottom Navigation Bar (Shared Mobile Component) -->
+    <nav aria-label="Navigation principale" class="fixed bottom-0 left-0 right-0 w-full max-w-[390px] mx-auto z-50 flex justify-around items-center h-16 px-2 bg-surface-container-lowest/95 backdrop-blur-md border-t border-white/5 shadow-2xl">
+      
+      <!-- Accueil -->
+      <a href="#" class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-on-surface transition-colors py-1 px-3">
+        <span class="material-symbols-outlined text-[22px]">home</span>
+        <span class="font-label text-[10px] font-medium mt-1">Accueil</span>
+      </a>
+
+      <!-- Chaînes -->
+      <a href="#" class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-on-surface transition-colors py-1 px-3">
+        <span class="material-symbols-outlined text-[22px]">live_tv</span>
+        <span class="font-label text-[10px] font-medium mt-1">Chaînes</span>
+      </a>
+
+      <!-- Recherche -->
+      <a href="#" class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-on-surface transition-colors py-1 px-3">
+        <span class="material-symbols-outlined text-[22px]">search</span>
+        <span class="font-label text-[10px] font-medium mt-1">Recherche</span>
+      </a>
+
+      <!-- Favoris (ACTIVE) -->
+      <a href="#" class="flex flex-col items-center justify-center text-primary-container font-semibold transition-colors py-1 px-3 relative">
+        <span class="material-symbols-outlined fill-1 text-[22px]">favorite</span>
+        <span class="font-label text-[10px] font-bold mt-1 text-primary-container">Favoris</span>
+        <span class="w-1 h-1 rounded-full bg-primary-container mt-0.5"></span>
+      </a>
+
+      <!-- Paramètres -->
+      <a href="#" class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-on-surface transition-colors py-1 px-3">
+        <span class="material-symbols-outlined text-[22px]">settings</span>
+        <span class="font-label text-[10px] font-medium mt-1">Paramètres</span>
+      </a>
+
+    </nav>
+
+  </main>
+
+</body>
+</html>

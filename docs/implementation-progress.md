@@ -1,0 +1,26 @@
+# TunisieTV — Progress
+
+| Phase | Status | Notes |
+|---|---|---|
+| 0 Reconnaissance | Done (2026-10-16) | See `implementation-plan.md` |
+| 1 Stitch design | **Done: all 8 concepts retrieved** | First 4 approved by the user 2026-10-16. The other 5 (TV browser, TV favorites+settings, phone browser, phone player, phone favorites+settings) appeared late (~23:50) and are implemented per the user's instruction to "pick up the remaining screens". All are in `docs/design/screens/`. Stitch inventions we skip are listed in `design-system.md` §1 |
+| 2 Foundation | **Done (2026-10-16)** | Expo SDK 57 + react-native-tvos 0.86.3-0. Theme, model, mock catalog, repository, storage, i18n skeleton, routes. tsc ✅ lint ✅ jest 16/16 ✅. **Phone release APK built** (arm64, `dist-apk/tunisietv-phone-release.apk`, sent to the user as a zip). Not yet run on a device/emulator. TV APK building |
+| 3 UI | **TV verified on emulator. Phone build sent for on-device test** | Nav shell (TV side rail with focus trap, phone bottom tabs, flat history so BACK → Home → exit). Home (hero, continue watching, favorites, category rows, skeleton), Channels (TV grid / phone list + chips), Search (FR/AR), Favorites (grid, empty state, recents), Settings (language info, clear history, about). Offline banner (NetInfo), LIVE badge only on playable channels, LibraryProvider (favorites + history, AsyncStorage). tsc ✅ lint ✅ jest 18/18 ✅. Player is still a placeholder (Phase 4). History is recorded on player open until real playback exists. **TV emulator (API 36) verified 2026-10-17:** launch via LEANBACK, D-pad in rows/grid/rail, rail entry lands on the active tab, OK opens the player, BACK returns to the same screen / Home, favorites + history persist across force-stop, Leanback-style row scrolling. Fixed on the emulator: clipped hero focus ring, 12h clock (Hermes Intl), rail entry target, focus ring cut at screen edges, ScrollView not scrolling to focused rows (now explicit via `TVScrollContext`), settings ring clipping. **Phone tested on the user's realme 11 (Android 15) 2026-10-17:** all screens functional. 3 visual defects fixed in v3 (TV focus visuals on phone, square tab pill, light nav bar). v3 is built and sent but not yet re-verified on the device |
+| 4 Player | **Done 2026-10-17. Verified on the realme 11 and the TV emulator** | `expo-video` (Media3) wrapped in `features/player/usePlayback`: plays only `isPlayable` channels; loading / rebuffering spinner; automatic reconnect after errors (3 attempts, 2 s → 4 s → 8 s, `services/playback/retryPolicy`), then the Stitch "Lecture impossible" card with **Réessayer**; reconnects when NetInfo reports the network back; "offline" variant of the card. History is now recorded on first real playback, not on opening the player. Zapping (prev/next, zap strip, remote CH+/CH−) swaps the route param, so BACK still leaves the player. TV: full-bleed video, top bar (monogram, name, LIVE, clock) + bottom zap strip and round controls, auto-hide after 5 s while playing, OK on the hidden chrome only reveals it, first BACK hides the chrome. Phone: 16:9 player with tap-to-toggle controls, fullscreen button, landscape fills the screen, channel card + favorite, error card, other-channels strip. Two `TEST_STREAM` catalog entries (Apple bipbop, Mux Big Buck Bunny) exist for QA; see `stream-rights-checklist.md`. tsc ✅ lint ✅ jest 20/20 ✅. Results in `testing.md` → Playback |
+| 5–7 | Not started | |
+
+## Toolchain (2026-10-16)
+- JDK 17.0.20 (Microsoft OpenJDK) at machine `JAVA_HOME`. Shells started before the install need it exported manually.
+- SDK: build-tools 36.0.0, platforms 36 + 37.0, NDK 27.1.12297006, Android TV image API 36 x86_64.
+- AVDs: phone `fi-thnitek-pixel` (API 35), TV `tunisietv-tv-1080p` (API 36, keyboard as D-pad). Not boot-tested yet.
+- `ANDROID_HOME` is not set globally. `scripts/build-apk.sh` defaults it to `%LOCALAPPDATA%\Android\Sdk`.
+
+## Build notes (lessons from the first builds)
+- First Gradle build ≈ 17+ min on this machine and network. Compiling 4 ABIs saturates the laptop. The script now builds **phone = arm64-v8a**, **TV = armeabi-v7a + arm64-v8a + x86_64**.
+- Slow network: Gradle HTTP timeouts raised to 180 s with 6 retries (one Maven jar download had timed out).
+- NDK auto-install by Gradle failed on a stale `Sdk\.temp` folder. Fixed by installing the NDK with `sdkmanager`.
+- **Android Studio holds a handle on `android/`** (the project has `.idea/`), so `expo prebuild --clean` fails with EBUSY. Workarounds: close Android Studio before prebuild, or build in a source copy (`D:\Workspace\tunisia-smart-tv-tvbuild`, `node_modules` junctioned) as was done for the first TV build.
+- The phone APK is 43.5 MiB (over the 30 MiB chat-upload limit). It was delivered zipped (26.6 MiB). R8 / resource shrinking would reduce it later (Phase 7).
+
+## Stitch notes
+- `generate_screen_from_text` always times out on the client. The first batch completed server-side (found later). The second batch of five never appeared. Fire one request at a time and poll `list_screens`.

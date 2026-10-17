@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TunisieTV — Direct &amp; Replay</title>
+<!-- Fonts: Sora (Display/Headlines) & Manrope (Body/Labels) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#ffb4aa",
+            "tertiary-fixed": "#c6e7ff",
+            "on-surface": "#e5e1e6",
+            "outline": "#af8782",
+            "secondary-fixed-dim": "#e4c285",
+            "tertiary": "#81cfff",
+            "surface": "#131316",
+            "secondary-fixed": "#ffdea4",
+            "surface-dim": "#131316",
+            "on-background": "#e5e1e6",
+            "tertiary-fixed-dim": "#81cfff",
+            "on-secondary-fixed-variant": "#5a4312",
+            "outline-variant": "#5f3f3b",
+            "on-primary-container": "#fff8f7",
+            "surface-container-high": "#2a2a2d",
+            "surface-bright": "#39393c",
+            "on-primary-fixed-variant": "#930008",
+            "primary-fixed": "#ffdad5",
+            "on-secondary-container": "#d5b478",
+            "on-primary-fixed": "#410001",
+            "surface-container-low": "#1b1b1e",
+            "on-secondary": "#412d00",
+            "inverse-surface": "#e5e1e6",
+            "secondary": "#e4c285",
+            "error": "#ffb4ab",
+            "on-tertiary-fixed-variant": "#004c6b",
+            "background": "#131316",
+            "inverse-primary": "#c0000e",
+            "primary": "#ffb4aa",
+            "inverse-on-surface": "#303033",
+            "on-tertiary": "#00344b",
+            "on-surface-variant": "#e9bcb6",
+            "error-container": "#93000a",
+            "primary-container": "#e70013",
+            "secondary-container": "#5d4514",
+            "surface-variant": "#353438",
+            "surface-container-highest": "#353438",
+            "on-tertiary-container": "#f6faff",
+            "surface-container-lowest": "#0e0e11",
+            "surface-container": "#1f1f22",
+            "on-tertiary-fixed": "#001e2d",
+            "on-error": "#690005",
+            "surface-tint": "#ffb4aa",
+            "on-primary": "#690004",
+            "tertiary-container": "#007baa",
+            "on-error-container": "#ffdad6",
+            "on-secondary-fixed": "#261900"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Sora", "sans-serif"],
+            "display": ["Sora", "sans-serif"],
+            "body": ["Manrope", "sans-serif"],
+            "label": ["Manrope", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+    }
+    /* Hide scrollbars while allowing TV remote/mouse scrolling */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    * {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes pulseLive {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .live-dot {
+      animation: pulseLive 1.8s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-[#0D0D11] text-on-surface font-body overflow-x-hidden antialiased selection:bg-primary-container selection:text-white">
+<!-- ========================================================================= -->
+<!-- 1. LEFT ICON NAVIGATION RAIL (from Shared Components JSON specifications) -->
+<!-- ========================================================================= -->
+<aside class="fixed top-0 start-0 h-full w-24 z-50 flex flex-col justify-between items-center py-8 bg-surface-container-low dark:bg-surface-container-low shadow-2xl">
+<!-- Top Brand Mark -->
+<div class="flex flex-col items-center gap-1 cursor-pointer">
+<div class="w-11 h-8 rounded-lg bg-surface-container-high border border-outline-variant/30 flex items-center justify-center shadow-md relative group">
+<div class="w-2.5 h-2.5 rounded-full bg-primary-container shadow-[0_0_8px_#E70013]"></div>
+<div class="absolute -bottom-1 w-4 h-1 bg-primary-container/80 rounded-full blur-[1px]"></div>
+</div>
+<div class="text-center mt-1">
+<span class="font-headline font-bold text-xs tracking-tight text-white block">Tunisie<span class="text-primary-container">TV</span></span>
+<span class="font-label text-[9px] text-white/50 block tracking-wider">DIRECT</span>
+</div>
+</div>
+<!-- Center Navigation Tabs (5 Items from JSON) -->
+<!-- Tab list: ["Accueil", "Chaînes", "Recherche", "Favoris", "Paramètres"] -->
+<!-- Current Page: Home screen -> "Accueil" is ACTIVE -->
+<nav aria-label="Menu principal" class="flex flex-col items-center gap-5 w-full px-2">
+<!-- Tab 0: Accueil (ACTIVE) -->
+<a class="text-on-primary-container bg-primary-container rounded-xl p-3 shadow-[0_0_16px_rgba(231,0,19,0.45)] flex flex-col items-center gap-1 group transition-all duration-200" href="#accueil" title="Accueil">
+<span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label text-[10px] font-semibold tracking-wide">Accueil</span>
+</a>
+<!-- Tab 1: Chaînes (Inactive) -->
+<a class="text-on-surface-variant p-3 opacity-80 hover:opacity-100 hover:scale-105 hover:text-on-surface transition-transform duration-200 focus:scale-105 focus:outline-none focus:ring-4 focus:ring-on-surface focus:shadow-[0_0_24px_rgba(231,0,19,0.55)] flex flex-col items-center gap-1 rounded-xl" href="#chaines" title="Chaînes">
+<span class="material-symbols-outlined text-[26px]">live_tv</span>
+<span class="font-label text-[10px] tracking-wide text-white/70">Chaînes</span>
+</a>
+<!-- Tab 2: Recherche (Inactive) -->
+<a class="text-on-surface-variant p-3 opacity-80 hover:opacity-100 hover:scale-105 hover:text-on-surface transition-transform duration-200 focus:scale-105 focus:outline-none focus:ring-4 focus:ring-on-surface focus:shadow-[0_0_24px_rgba(231,0,19,0.55)] flex flex-col items-center gap-1 rounded-xl" href="#recherche" title="Recherche">
+<span class="material-symbols-outlined text-[26px]">search</span>
+<span class="font-label text-[10px] tracking-wide text-white/70">Recherche</span>
+</a>
+<!-- Tab 3: Favoris (Inactive) -->
+<a class="text-on-surface-variant p-3 opacity-80 hover:opacity-100 hover:scale-105 hover:text-on-surface transition-transform duration-200 focus:scale-105 focus:outline-none focus:ring-4 focus:ring-on-surface focus:shadow-[0_0_24px_rgba(231,0,19,0.55)] flex flex-col items-center gap-1 rounded-xl" href="#favoris" title="Favoris">
+<span class="material-symbols-outlined text-[26px]">favorite</span>
+<span class="font-label text-[10px] tracking-wide text-white/70">Favoris</span>
+</a>
+<!-- Tab 4: Paramètres (Inactive) -->
+<a class="text-on-surface-variant p-3 opacity-80 hover:opacity-100 hover:scale-105 hover:text-on-surface transition-transform duration-200 focus:scale-105 focus:outline-none focus:ring-4 focus:ring-on-surface focus:shadow-[0_0_24px_rgba(231,0,19,0.55)] flex flex-col items-center gap-1 rounded-xl" href="#parametres" title="Paramètres">
+<span class="material-symbols-outlined text-[26px]">settings</span>
+<span class="font-label text-[10px] tracking-wide text-white/70">Paramètres</span>
+</a>
+</nav>
+<!-- Bottom Status & Profil -->
+<div class="flex flex-col items-center gap-3">
+<div class="text-center">
+<span class="font-headline text-[13px] font-bold text-white tracking-wider block">20:14</span>
+<span class="font-label text-[9px] text-white/50 block uppercase tracking-widest">Tunis</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-highest border border-white/20 flex items-center justify-center text-on-surface hover:border-primary-container transition-colors" title="Profil">
+<span class="material-symbols-outlined text-[24px]">account_circle</span>
+</button>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- MAIN 10-FOOT TV CANVAS (1920x1080 optimized, with safe area paddings)     -->
+<!-- ========================================================================= -->
+<main class="ms-24 min-h-screen relative pb-16 flex flex-col">
+<!-- HERO BACKGROUND & SCRIMS -->
+<div class="relative w-full h-[620px] overflow-hidden select-none">
+<!-- Hero Image: Sidi Bou Said evening twilight aerial -->
+<img alt="Vue aérienne crépusculaire de Sidi Bou Said et du littoral tunisien" class="w-full h-full object-cover object-center scale-105 transform translate-y-[-10px] filter brightness-[0.78] contrast-[1.12]" src="https://lh3.googleusercontent.com/aida/AEtjO1VsQOIeYYFxaXSal5q3updHOum0pLIXMUiLSbpK15xYHi-0dfUl5NitRH4CVwmv6YUgrYqPNAKqzeKgy82SKuEYSEepi9R2gH7eVfFuK5274XyNkDTYeUx3nYYwuXW3xT34_x9EuuoY2hCJANqDoV9hrQcsQ2rfSklNBcuoWY2HWybetgdMyIYM3Aej9wscl--IU39il8kipLtNP_a9p42nFseWEpmSED5Yw1xihj-d7EWDebJyhuGbdw"/>
+<!-- Atmospheric TV Scrim Overlays -->
+<!-- Left dark gradient to blend seamlessly into Side Rail -->
+<div class="absolute inset-0 bg-gradient-to-r from-[#0D0D11] via-[#0D0D11]/85 via-40% to-transparent"></div>
+<!-- Bottom deep gradient to blend seamlessly into rows below -->
+<div class="absolute inset-x-0 bottom-0 h-80 bg-gradient-to-t from-[#0D0D11] via-[#0D0D11]/90 to-transparent"></div>
+<!-- Top subtle vignette for TV top safe area -->
+<div class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0D0D11]/70 to-transparent"></div>
+<!-- TV Safe-Zone Header Bar (Top Right Status Info) -->
+<div class="absolute top-8 end-16 flex items-center gap-5 z-20">
+<div class="flex items-center gap-2 bg-surface-container-low/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+<span class="font-label text-xs font-medium text-white/90">Fibre 100 Mbps</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg">
+<span class="material-symbols-outlined text-sm text-secondary">wifi</span>
+<span class="font-label text-xs font-semibold text-white tracking-wide">TV SALON</span>
+</div>
+</div>
+<!-- Hero Program Information (Anchored at Safe Left Margin: 56px) -->
+<div class="absolute bottom-12 start-14 max-w-3xl z-20 flex flex-col items-start">
+<!-- Metadata Badges Row -->
+<div class="flex items-center gap-3 mb-3">
+<!-- Live Crimson Badge -->
+<div class="flex items-center gap-2 bg-primary-container px-3 py-1 rounded-full shadow-[0_0_14px_rgba(231,0,19,0.65)]">
+<span class="w-2 h-2 rounded-full bg-white live-dot"></span>
+<span class="font-headline font-bold text-xs tracking-wider text-white uppercase">EN DIRECT</span>
+</div>
+<!-- Channel Badge -->
+<div class="flex items-center gap-2 bg-surface-container-high/90 backdrop-blur-md px-3 py-1 rounded-full border border-white/15">
+<span class="w-4 h-4 rounded bg-primary-container/30 border border-primary-container/70 text-[9px] font-bold text-white flex items-center justify-center">W1</span>
+<span class="font-headline font-semibold text-xs tracking-wide text-white">WATANIYA 1 HD</span>
+</div>
+<!-- Secondary metadata -->
+<span class="bg-surface-container-low/80 backdrop-blur-md text-secondary-fixed text-xs px-3 py-1 rounded-full border border-secondary-container/40 font-medium">
+            Édition Principale
+          </span>
+<span class="font-label text-xs text-white/60 tracking-wider">Canal 01</span>
+</div>
+<!-- Headline Title -->
+<h1 class="font-headline font-extrabold text-5xl tracking-tight text-white drop-shadow-md mb-2">
+          Journal du soir
+        </h1>
+<!-- Program Subtext & Technical Specs -->
+<p class="font-label text-sm text-white/70 font-medium mb-3 flex items-center gap-2">
+<span>Actualités</span>
+<span class="text-white/30">•</span>
+<span class="text-white/90 font-semibold">20:00 – 20:45</span>
+<span class="text-white/30">•</span>
+<span>Arabe (Fusha)</span>
+<span class="text-white/30">•</span>
+<span class="px-1.5 py-0.5 rounded text-[11px] bg-white/10 font-bold text-white">HD 1080p</span>
+<span class="px-1.5 py-0.5 rounded text-[11px] bg-white/10 font-medium text-white/80">Sous-titres</span>
+</p>
+<!-- Synopsis Description -->
+<p class="font-body text-base text-white/85 max-w-2xl leading-relaxed mb-4 line-clamp-2">
+          Le tour d'horizon complet de l'actualité nationale en Tunisie : réformes économiques, développements parlementaires et le point météo sur les côtes tunisiennes.
+        </p>
+<!-- Sleek Live Progress Bar -->
+<div class="w-full max-w-xl mb-6">
+<div class="flex justify-between items-center text-xs font-label text-white/60 mb-1.5">
+<span class="text-white font-medium">20:14 (écoulé 14 min)</span>
+<span class="text-secondary-fixed font-medium">20:45 (31 min restantes)</span>
+</div>
+<div class="w-full h-1.5 bg-white/20 rounded-full overflow-hidden backdrop-blur-sm">
+<div class="h-full bg-primary-container rounded-full shadow-[0_0_12px_#E70013] transition-all duration-500" style="width: 32%;"></div>
+</div>
+</div>
+<!-- TV D-pad Interactive Action Buttons Row -->
+<div class="flex items-center gap-4">
+<!-- Focused Primary CTA (D-pad Focus representation as defined in specs) -->
+<button class="flex items-center gap-3 bg-primary-container text-white px-7 py-3 rounded-xl font-headline font-bold text-lg scale-105 ring-4 ring-white shadow-[0_0_24px_rgba(231,0,19,0.65)] hover:scale-110 active:scale-100 transition-all duration-200">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span>Regarder</span>
+</button>
+<!-- Secondary Button -->
+<button class="flex items-center gap-2.5 bg-surface-container-high/80 hover:bg-surface-container-highest backdrop-blur-md text-white px-5 py-3 rounded-xl font-headline font-semibold text-base border border-white/15 hover:border-white/30 focus:scale-105 focus:ring-4 focus:ring-white transition-all duration-200">
+<span class="material-symbols-outlined text-xl">favorite_border</span>
+<span>Ajouter aux favoris</span>
+</button>
+<!-- Guide TV Quick Button -->
+<button class="flex items-center gap-2.5 bg-surface-container-high/80 hover:bg-surface-container-highest backdrop-blur-md text-white px-5 py-3 rounded-xl font-headline font-semibold text-base border border-white/15 hover:border-white/30 focus:scale-105 focus:ring-4 focus:ring-white transition-all duration-200">
+<span class="material-symbols-outlined text-xl">calendar_today</span>
+<span>Guide TV</span>
+</button>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- 2. TV CONTENT CAROUSEL ROWS (16:9 Cards with Original Monograms)          -->
+<!-- ========================================================================= -->
+<div class="px-14 flex flex-col gap-9 -mt-4 relative z-30">
+<!-- ========================================== -->
+<!-- ROW 1: "Continuer à regarder"              -->
+<!-- ========================================== -->
+<section>
+<div class="flex items-center justify-between mb-3.5">
+<div class="flex items-center gap-3">
+<h2 class="font-headline font-bold text-2xl text-white tracking-tight">
+              Continuer à regarder
+            </h2>
+<span class="text-xs bg-white/10 text-white/80 px-2.5 py-0.5 rounded-full font-label font-medium">4 chaînes actives</span>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-white/50 font-label">
+<span>D-PAD DROITE</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- 4 Card Carousel Grid (Asymmetric TV proportions, 16:9 cards) -->
+<div class="grid grid-cols-4 gap-5">
+<!-- Card 1: Hannibal TV -->
+<div class="group relative bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-white/30 focus:scale-108 focus:ring-4 focus:ring-white focus:shadow-[0_0_24px_rgba(231,0,19,0.55)] transition-all duration-200 cursor-pointer shadow-lg">
+<!-- 16:9 Thumbnail Area with Amber Gradient & Monogram -->
+<div class="aspect-video w-full relative bg-gradient-to-tr from-[#1E1408] via-[#3D2507] to-[#5D3D10] flex items-center justify-center overflow-hidden">
+<!-- Geometric subtle watermarked monogram -->
+<div class="absolute -right-4 -bottom-6 text-7xl font-headline font-extrabold text-white/[0.04] select-none">HTV</div>
+<!-- Center Logo Monogram -->
+<div class="w-14 h-14 rounded-xl bg-[#261900]/80 border border-secondary-fixed/30 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+<span class="font-headline font-extrabold text-xl text-secondary-fixed tracking-wider">HTV</span>
+</div>
+<!-- Channel Number Pill Top-Left -->
+<div class="absolute top-2.5 start-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-headline font-bold text-white border border-white/10">
+                CH 02
+              </div>
+<!-- Time elapsed Badge -->
+<div class="absolute top-2.5 end-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-label font-semibold text-secondary-fixed">
+                45 min regardées
+              </div>
+<!-- Live playback progress line -->
+<div class="absolute bottom-0 inset-x-0 h-1 bg-black/50">
+<div class="h-full bg-primary-container" style="width: 65%;"></div>
+</div>
+</div>
+<!-- Card Bottom Meta -->
+<div class="p-3.5 bg-surface-container">
+<div class="flex items-center justify-between mb-1">
+<h3 class="font-headline font-bold text-base text-white truncate group-hover:text-primary transition-colors">Al Mousameh Karim</h3>
+</div>
+<p class="font-label text-xs text-white/60 truncate">Hannibal TV · Débat social</p>
+</div>
+</div>
+<!-- Card 2: Attessia TV (EN DIRECT) -->
+<div class="group relative bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-white/30 focus:scale-108 focus:ring-4 focus:ring-white focus:shadow-[0_0_24px_rgba(231,0,19,0.55)] transition-all duration-200 cursor-pointer shadow-lg">
+<!-- 16:9 Area with Deep Burgundy Gradient -->
+<div class="aspect-video w-full relative bg-gradient-to-tr from-[#1F070A] via-[#3B0D13] to-[#5C141E] flex items-center justify-center overflow-hidden">
+<div class="absolute -right-4 -bottom-6 text-7xl font-headline font-extrabold text-white/[0.04] select-none">AT9</div>
+<div class="w-14 h-14 rounded-xl bg-[#140003]/80 border border-primary-container/40 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+<span class="font-headline font-extrabold text-xl text-primary-fixed tracking-wider">AT9</span>
+</div>
+<div class="absolute top-2.5 start-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-headline font-bold text-white border border-white/10">
+                CH 09
+              </div>
+<div class="absolute top-2.5 end-2.5 bg-primary-container px-2 py-0.5 rounded text-[10px] font-headline font-bold text-white flex items-center gap-1 shadow-[0_0_8px_#E70013]">
+<span class="w-1.5 h-1.5 rounded-full bg-white live-dot"></span>
+<span>DIRECT</span>
+</div>
+<div class="absolute bottom-0 inset-x-0 h-1 bg-black/50">
+<div class="h-full bg-primary-container" style="width: 40%;"></div>
+</div>
+</div>
+<div class="p-3.5 bg-surface-container">
+<div class="flex items-center justify-between mb-1">
+<h3 class="font-headline font-bold text-base text-white truncate group-hover:text-primary transition-colors">Rendez-vous 9</h3>
+</div>
+<p class="font-label text-xs text-white/60 truncate">Attessia TV · Talk-show politique</p>
+</div>
+</div>
+<!-- Card 3: El Hiwar Ettounsi (EN DIRECT) -->
+<div class="group relative bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-white/30 focus:scale-108 focus:ring-4 focus:ring-white focus:shadow-[0_0_24px_rgba(231,0,19,0.55)] transition-all duration-200 cursor-pointer shadow-lg">
+<!-- 16:9 Area with Deep Indigo-Cyan Gradient -->
+<div class="aspect-video w-full relative bg-gradient-to-tr from-[#091522] via-[#0E263D] to-[#12395C] flex items-center justify-center overflow-hidden">
+<div class="absolute -right-4 -bottom-6 text-7xl font-headline font-extrabold text-white/[0.04] select-none">EH</div>
+<div class="w-14 h-14 rounded-xl bg-[#030C16]/80 border border-tertiary-fixed/30 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+<span class="font-headline font-extrabold text-xl text-tertiary-fixed tracking-wider">EH</span>
+</div>
+<div class="absolute top-2.5 start-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-headline font-bold text-white border border-white/10">
+                CH 05
+              </div>
+<div class="absolute top-2.5 end-2.5 bg-primary-container px-2 py-0.5 rounded text-[10px] font-headline font-bold text-white flex items-center gap-1 shadow-[0_0_8px_#E70013]">
+<span class="w-1.5 h-1.5 rounded-full bg-white live-dot"></span>
+<span>DIRECT</span>
+</div>
+<div class="absolute bottom-0 inset-x-0 h-1 bg-black/50">
+<div class="h-full bg-primary-container" style="width: 80%;"></div>
+</div>
+</div>
+<div class="p-3.5 bg-surface-container">
+<div class="flex items-center justify-between mb-1">
+<h3 class="font-headline font-bold text-base text-white truncate group-hover:text-primary transition-colors">Fekret Sami Fehri</h3>
+</div>
+<p class="font-label text-xs text-white/60 truncate">El Hiwar Ettounsi · Divertissement</p>
+</div>
+</div>
+<!-- Card 4: Nessma TV -->
+<div class="group relative bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-white/30 focus:scale-108 focus:ring-4 focus:ring-white focus:shadow-[0_0_24px_rgba(231,0,19,0.55)] transition-all duration-200 cursor-pointer shadow-lg">
+<!-- 16:9 Area with Dark Emerald/Teal Gradient -->
+<div class="aspect-video w-full relative bg-gradient-to-tr from-[#061C14] via-[#0C3325] to-[#144F3A] flex items-center justify-center overflow-hidden">
+<div class="absolute -right-4 -bottom-6 text-7xl font-headline font-extrabold text-white/[0.04] select-none">NS</div>
+<div class="w-14 h-14 rounded-xl bg-[#020D09]/80 border border-emerald-400/30 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+<span class="font-headline font-extrabold text-xl text-emerald-300 tracking-wider">NS</span>
+</div>
+<div class="absolute top-2.5 start-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-headline font-bold text-white border border-white/10">
+                CH 04
+              </div>
+<div class="absolute top-2.5 end-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-label font-semibold text-white/70">
+                Saison 2 · Ep. 42
+              </div>
+<div class="absolute bottom-0 inset-x-0 h-1 bg-black/50">
+<div class="h-full bg-primary-container" style="width: 15%;"></div>
+</div>
+</div>
+<div class="p-3.5 bg-surface-container">
+<div class="flex items-center justify-between mb-1">
+<h3 class="font-headline font-bold text-base text-white truncate group-hover:text-primary transition-colors">Feuilleton Khalil</h3>
+</div>
+<p class="font-label text-xs text-white/60 truncate">Nessma TV · Série en dialecte tunisien</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================== -->
+<!-- ROW 2: "Actualités & Débats"               -->
+<!-- ========================================== -->
+<section>
+<div class="flex items-center justify-between mb-3.5">
+<div class="flex items-center gap-3">
+<h2 class="font-headline font-bold text-2xl text-white tracking-tight">
+              Actualités &amp; Débats
+            </h2>
+<span class="text-xs bg-secondary-container/40 text-secondary-fixed px-2.5 py-0.5 rounded-full font-label font-medium border border-secondary-fixed/20">Flux National</span>
+</div>
+<button class="text-xs font-label text-white/60 hover:text-white flex items-center gap-1 transition-colors">
+<span>Tous les débats</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-4 gap-5">
+<!-- Card 2.1: Wataniya 1 -->
+<div class="group relative bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-white/30 focus:scale-108 focus:ring-4 focus:ring-white transition-all duration-200 cursor-pointer shadow-lg">
+<div class="aspect-video w-full relative bg-gradient-to-tr from-[#240407] via-[#48080E] to-[#6E0C17] flex items-center justify-center">
+<div class="w-14 h-14 rounded-xl bg-[#140003]/80 border border-primary-container/40 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+<span class="font-headline font-extrabold text-xl text-primary-fixed tracking-wider">W1</span>
+</div>
+<div class="absolute top-2.5 start-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-headline font-bold text-white border border-white/10">
+                CH 01
+              </div>
+<div class="absolute top-2.5 end-2.5 bg-primary-container px-2 py-0.5 rounded text-[10px] font-headline font-bold text-white flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-white live-dot"></span>
+<span>DIRECT</span>
+</div>
+</div>
+<div class="p-3.5 bg-surface-container">
+<h3 class="font-headline font-bold text-base text-white truncate group-hover:text-primary transition-colors">Journal de 20h</h3>
+<p class="font-label text-xs text-white/60 truncate">Wataniya 1 · Télévision Tunisienne</p>
+</div>
+</div>
+<!-- Card 2.2: Wataniya 2 -->
+<div class="group relative bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-white/30 focus:scale-108 focus:ring-4 focus:ring-white transition-all duration-200 cursor-pointer shadow-lg">
+<div class="aspect-video w-full relative bg-gradient-to-tr from-[#0F172A] via-[#1E293B] to-[#334155] flex items-center justify-center">
+<div class="w-14 h-14 rounded-xl bg-[#090D15]/80 border border-slate-400/30 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+<span class="font-headline font-extrabold text-xl text-slate-200 tracking-wider">W2</span>
+</div>
+<div class="absolute top-2.5 start-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-headline font-bold text-white border border-white/10">
+                CH 03
+              </div>
+<div class="absolute top-2.5 end-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-label font-medium text-white/80">
+                ARP Bardo
+              </div>
+</div>
+<div class="p-3.5 bg-surface-container">
+<h3 class="font-headline font-bold text-base text-white truncate group-hover:text-primary transition-colors">Direct Assemblée</h3>
+<p class="font-label text-xs text-white/60 truncate">Wataniya 2 · Séance plénière parlementaire</p>
+</div>
+</div>
+<!-- Card 2.3: Tunisna TV -->
+<div class="group relative bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-white/30 focus:scale-108 focus:ring-4 focus:ring-white transition-all duration-200 cursor-pointer shadow-lg">
+<div class="aspect-video w-full relative bg-gradient-to-tr from-[#211604] via-[#422D08] to-[#63440D] flex items-center justify-center">
+<div class="w-14 h-14 rounded-xl bg-[#140D02]/80 border border-secondary/30 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+<span class="font-headline font-extrabold text-xl text-secondary tracking-wider">TN</span>
+</div>
+<div class="absolute top-2.5 start-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-headline font-bold text-white border border-white/10">
+                CH 07
+              </div>
+<div class="absolute top-2.5 end-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-label font-medium text-white/80">
+                21:00
+              </div>
+</div>
+<div class="p-3.5 bg-surface-container">
+<h3 class="font-headline font-bold text-base text-white truncate group-hover:text-primary transition-colors">Le Débat Politique</h3>
+<p class="font-label text-xs text-white/60 truncate">Tunisna TV · Table ronde économique</p>
+</div>
+</div>
+<!-- Card 2.4: Carthage+ -->
+<div class="group relative bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-white/30 focus:scale-108 focus:ring-4 focus:ring-white transition-all duration-200 cursor-pointer shadow-lg">
+<div class="aspect-video w-full relative bg-gradient-to-tr from-[#1E0B2B] via-[#381650] to-[#552279] flex items-center justify-center">
+<div class="w-14 h-14 rounded-xl bg-[#12061A]/80 border border-purple-400/30 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+<span class="font-headline font-extrabold text-xl text-purple-200 tracking-wider">C+</span>
+</div>
+<div class="absolute top-2.5 start-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-headline font-bold text-white border border-white/10">
+                CH 11
+              </div>
+<div class="absolute top-2.5 end-2.5 bg-surface-container-high/90 px-2 py-0.5 rounded text-[10px] font-label font-semibold text-secondary-fixed">
+                Inédit
+              </div>
+</div>
+<div class="p-3.5 bg-surface-container">
+<h3 class="font-headline font-bold text-base text-white truncate group-hover:text-primary transition-colors">Documentaire Carthage</h3>
+<p class="font-label text-xs text-white/60 truncate">Carthage+ · Histoire de la cité punique</p>
+</div>
+</div>
+</div>
+</section>
+<!-- TV Navigation Remote Hint Bar (Bottom TV Safe Margin) -->
+<footer class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-white/40 font-label select-none">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-surface-container-high rounded text-[11px] font-mono text-white/80 border border-white/10">OK</span>
+<span>Sélectionner</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-surface-container-high rounded text-[11px] font-mono text-white/80 border border-white/10">▲ / ▼ / ◀ / ▶</span>
+<span>Naviguer</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-surface-container-high rounded text-[11px] font-mono text-white/80 border border-white/10">RETOUR</span>
+<span>Menu précédent</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5 text-white/50">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+            TunisieTV v4.2 TVOS
+          </span>
+</div>
+</footer>
+</div>
+</main>
+</body></html>
